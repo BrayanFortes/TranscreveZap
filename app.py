@@ -168,15 +168,15 @@ def transcrever():
 
         # Otimização 2: thinking_budget=0 desativa raciocínio desnecessário, tornando a transcrição ultrarrápida
         gen_config = types.GenerateContentConfig(
+            system_instruction="Transcreva estritamente o que for falado no áudio em português com pontuação correta e sem introduções ou explicações. Se não houver fala discernível ou for apenas ruído/silêncio, responda apenas [Áudio inaudível].",
             thinking_config=types.ThinkingConfig(thinking_budget=0),
             temperature=0.1,
         )
-        prompt = "Transcreva fielmente todo o áudio a seguir em português com pontuação adequada, sem introduções ou explicações adicionais:"
 
         def call_model(model_name):
             res = client.models.generate_content(
                 model=model_name,
-                contents=[audio_content, prompt],
+                contents=[audio_content],
                 config=gen_config,
             )
             return res.text or ""
