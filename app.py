@@ -181,15 +181,20 @@ def transcrever():
             )
             return res.text or ""
 
+        t_start = datetime.now(timezone.utc)
+        used_model = chosen_model
+
         try:
             transcription_text = call_model(chosen_model)
         except Exception as model_err:
             if chosen_model != fallback_model:
                 app.logger.warning("Falha ao usar %s (%s). Executando fallback para %s...", chosen_model, model_err, fallback_model)
+                used_model = fallback_model
                 transcription_text = call_model(fallback_model)
             else:
                 raise
 
+        duration_sec = round((datetime.now(timezone.utc) - t_start).total_seconds(), 2)
         created_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
         with get_db() as connection:
             cursor = connection.execute(
@@ -197,7 +202,14 @@ def transcrever():
                 (Path(audio.filename).name, transcription_text, created_at),
             )
             transcription_id = cursor.lastrowid
-        return jsonify(id=transcription_id, filename=Path(audio.filename).name, created_at=created_at, text=transcription_text)
+        return jsonify(
+            id=transcription_id,
+            filename=Path(audio.filename).name,
+            created_at=created_at,
+            text=transcription_text,
+            duration=duration_sec,
+            model=used_model,
+        )
     except Exception as error:
         app.logger.exception("Falha ao transcrever áudio")
         message = str(error)

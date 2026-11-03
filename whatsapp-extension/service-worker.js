@@ -1,4 +1,7 @@
-const TRANSCRIBE_ENDPOINT = "http://127.0.0.1:5000/api/transcrever";
+const TRANSCRIBE_ENDPOINTS = [
+  "http://127.0.0.1:5000/api/transcrever",
+  "https://transcreve-zap.vercel.app/api/transcrever"
+];
 const MAX_AUDIO_BYTES = 25 * 1024 * 1024;
 
 function extensionForMime(mimeType) {
@@ -124,12 +127,22 @@ async function transcribe(file) {
   if (!file || file.size === 0) throw new Error("O áudio está vazio ou não foi carregado.");
   if (file.size > MAX_AUDIO_BYTES) throw new Error("O áudio ultrapassa o limite de 25 MB.");
 
-  const form = new FormData();
-  form.append("audio", file, file.name);
-  const response = await fetch(TRANSCRIBE_ENDPOINT, { method: "POST", body: form });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(payload.error || "O TranscreveZap não conseguiu transcrever o áudio.");
-  return payload.text || "";
+  let lastError = null;
+  for (const endpoint of TRANSCRIBE_ENDPOINTS) {
+    try {
+      const form = new FormData();
+      form.append("audio", file, file.name);
+      const response = await fetch(endpoint, { method: "POST", body: form });
+      const payload = await response.json().catch(() => ({}));
+      if (response.ok) {
+        return payload.text || "";
+      }
+      lastError = new Error(payload.error || "O TranscreveZap não conseguiu transcrever o áudio.");
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error("Falha ao comunicar com o servidor do TranscreveZap.");
 }
 
 async function ensureOffscreenRecorder() {
