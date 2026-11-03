@@ -102,26 +102,13 @@ def too_large(_error):
 
 @app.get("/api/historico")
 def historico():
-    with get_db() as connection:
-        rows = connection.execute(
-            "SELECT id, filename, text, created_at FROM transcriptions ORDER BY id DESC LIMIT 100"
-        ).fetchall()
-    return jsonify([dict(row) for row in rows])
+    # Histórico agora é 100% privado no navegador de cada usuário (localStorage)
+    return jsonify([])
 
 
-@app.delete("/api/historico/<int:transcription_id>")
-def apagar_transcricao(transcription_id):
-    with get_db() as connection:
-        cursor = connection.execute("DELETE FROM transcriptions WHERE id = ?", (transcription_id,))
-    if cursor.rowcount == 0:
-        return jsonify(error="Transcrição não encontrada."), 404
-    return jsonify(ok=True)
-
-
+@app.delete("/api/historico/<path:_subpath>")
 @app.delete("/api/historico")
-def limpar_historico():
-    with get_db() as connection:
-        connection.execute("DELETE FROM transcriptions")
+def limpar_historico(_subpath=None):
     return jsonify(ok=True)
 
 
@@ -196,12 +183,8 @@ def transcrever():
 
         duration_sec = round((datetime.now(timezone.utc) - t_start).total_seconds(), 2)
         created_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
-        with get_db() as connection:
-            cursor = connection.execute(
-                "INSERT INTO transcriptions (filename, text, created_at) VALUES (?, ?, ?)",
-                (Path(audio.filename).name, transcription_text, created_at),
-            )
-            transcription_id = cursor.lastrowid
+        transcription_id = f"tx_{int(datetime.now(timezone.utc).timestamp() * 1000)}"
+
         return jsonify(
             id=transcription_id,
             filename=Path(audio.filename).name,

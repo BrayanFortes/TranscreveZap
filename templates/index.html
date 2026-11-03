@@ -969,6 +969,10 @@
         <div class="history-title-box">
           <h2>Histórico de Áudios</h2>
           <span class="history-badge" id="history-count">0</span>
+          <span style="font-size: 11px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px; margin-left: 8px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Privado no seu navegador
+          </span>
         </div>
         <button class="btn-tool" id="btn-clear-history" type="button" style="display: none; color: var(--danger);">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
@@ -1274,7 +1278,13 @@
 
         displayTranscription(data.text, data.duration);
         showToast('Transcrição concluída com sucesso!');
-        loadHistory();
+        addHistoryEntry({
+          id: data.id || 'tx_' + Date.now(),
+          filename: data.filename || selectedFile?.name || 'audio',
+          text: data.text,
+          created_at: data.created_at || new Date().toISOString(),
+          duration: data.duration
+        });
       } catch (err) {
         clearInterval(loadingInterval);
         loadingIndicator.classList.remove('visible');
@@ -1334,7 +1344,8 @@
       showToast('Arquivo de texto baixado com sucesso!');
     });
 
-    // History System
+    // History System (100% Privado no Navegador via LocalStorage)
+    const STORAGE_KEY = 'transcrevezap_user_history';
     const historyList = document.getElementById('history-list');
     const historyEmpty = document.getElementById('history-empty');
     const historyCount = document.getElementById('history-count');
@@ -1342,16 +1353,32 @@
     const historySearchContainer = document.getElementById('history-search-container');
     const historySearchInput = document.getElementById('history-search-input');
 
-    async function loadHistory() {
+    function getLocalHistory() {
       try {
-        const res = await fetch('/api/historico');
-        if (!res.ok) throw new Error();
-        historyEntries = await res.json();
-        renderHistory(historyEntries);
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
       } catch {
-        historyEmpty.style.display = 'block';
-        historyEmpty.innerHTML = '<p>Não foi possível carregar o histórico de transcrições.</p>';
+        return [];
       }
+    }
+
+    function saveLocalHistory(entries) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      } catch (err) {
+        console.warn('Não foi possível salvar histórico no navegador:', err);
+      }
+    }
+
+    function loadHistory() {
+      historyEntries = getLocalHistory();
+      renderHistory(historyEntries);
+    }
+
+    function addHistoryEntry(entry) {
+      historyEntries = [entry, ...historyEntries.filter(i => i.id !== entry.id)].slice(0, 100);
+      saveLocalHistory(historyEntries);
+      renderHistory(historyEntries);
     }
 
     function renderHistory(entries) {
@@ -1423,17 +1450,12 @@
         delBtn.title = 'Excluir';
         delBtn.style.color = 'var(--danger)';
         delBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
-        delBtn.addEventListener('click', async () => {
+        delBtn.addEventListener('click', () => {
           if (!confirm(`Remover "${entry.filename}" do histórico?`)) return;
-          try {
-            const delRes = await fetch(`/api/historico/${entry.id}`, { method: 'DELETE' });
-            if (delRes.ok) {
-              showToast('Item removido do histórico.');
-              loadHistory();
-            }
-          } catch {
-            showToast('Erro ao remover item.', 'error');
-          }
+          historyEntries = historyEntries.filter(item => item.id !== entry.id);
+          saveLocalHistory(historyEntries);
+          renderHistory(historyEntries);
+          showToast('Item removido do histórico.');
         });
 
         actions.append(copyBtn, dlBtn, delBtn);
@@ -1462,17 +1484,12 @@
       renderHistory(filtered);
     });
 
-    btnClearHistory.addEventListener('click', async () => {
-      if (!confirm('Deseja realmente apagar todo o histórico de transcrições?')) return;
-      try {
-        const res = await fetch('/api/historico', { method: 'DELETE' });
-        if (res.ok) {
-          showToast('Histórico limpo com sucesso.');
-          loadHistory();
-        }
-      } catch {
-        showToast('Erro ao limpar histórico.', 'error');
-      }
+    btnClearHistory.addEventListener('click', () => {
+      if (!confirm('Deseja realmente apagar todo o seu histórico de transcrições deste navegador?')) return;
+      historyEntries = [];
+      saveLocalHistory(historyEntries);
+      renderHistory(historyEntries);
+      showToast('Seu histórico local foi limpo.');
     });
 
     // Initialize
