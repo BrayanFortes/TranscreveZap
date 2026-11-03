@@ -10,7 +10,21 @@ from google.genai import types
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 25 * 1024 * 1024
-DATABASE_PATH = Path(os.getenv("TRANSCRIPTIONS_DB", Path(__file__).parent / "data" / "transcriptions.db"))
+def get_database_path():
+    env_path = os.getenv("TRANSCRIPTIONS_DB")
+    if env_path:
+        return Path(env_path)
+    if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
+        return Path("/tmp/transcriptions.db")
+    try:
+        local_dir = Path(__file__).parent / "data"
+        local_dir.mkdir(parents=True, exist_ok=True)
+        return local_dir / "transcriptions.db"
+    except OSError:
+        return Path("/tmp/transcriptions.db")
+
+
+DATABASE_PATH = get_database_path()
 
 ALLOWED_EXTENSIONS = {".aac", ".flac", ".m4a", ".mp3", ".mp4", ".mpeg", ".mpga", ".oga", ".ogg", ".opus", ".wav", ".webm"}
 MIME_TYPES = {
@@ -43,7 +57,10 @@ def get_api_key():
 
 @contextmanager
 def get_db():
-    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass
     connection = sqlite3.connect(DATABASE_PATH, timeout=10)
     connection.row_factory = sqlite3.Row
     try:
