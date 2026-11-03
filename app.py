@@ -90,6 +90,7 @@ initialize_db()
 
 
 @app.get("/")
+@app.get("/api/index")
 def index():
     return render_template("index.html")
 
