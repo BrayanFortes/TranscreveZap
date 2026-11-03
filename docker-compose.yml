@@ -7,7 +7,7 @@ services:
       - "5000:8080"
     environment:
       PORT: "8080"
-      GEMINI_MODEL: "${GEMINI_MODEL:-gemini-3.8-flash}"
+      GEMINI_MODEL: "${GEMINI_MODEL:-gemini-2.5-flash}"
       TRANSCRIPTIONS_DB: /data/transcriptions.db
       GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
     secrets:

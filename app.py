@@ -139,58 +139,65 @@ def transcrever():
     if extension not in ALLOWED_EXTENSIONS:
         return jsonify(error="Formato não aceito. Envie um áudio como OGG, OPUS, MP3, M4A, WAV ou outro formato de áudio comum."), 400
 
+    mime_type = MIME_TYPES.get(extension, "audio/ogg")
+    audio_bytes = audio.read()
+    if not audio_bytes:
+        return jsonify(error="O arquivo de áudio enviado está vazio."), 400
+
     try:
         client = genai.Client(api_key=api_key)
-        suffix = ".ogg" if extension == ".opus" else extension
-        temporary_path = None
-        try:
+
+        # Otimização 1: Para áudios de até 20 MB, envia bytes direto em memória sem upload intermediário
+        if len(audio_bytes) <= 20 * 1024 * 1024:
+            audio_content = types.Part.from_bytes(data=audio_bytes, mime_type=mime_type)
+        else:
             import tempfile
-            with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temporary_file:
-                audio.save(temporary_file)
+            with tempfile.NamedTemporaryFile(suffix=extension, delete=False) as temporary_file:
+                temporary_file.write(audio_bytes)
                 temporary_path = temporary_file.name
-            uploaded = client.files.upload(
-                file=temporary_path,
-                config=types.UploadFileConfig(mime_type=MIME_TYPES[extension]),
-            )
-            
-            chosen_model = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
-            fallback_model = "gemini-3.5-transcribe"
-
-            def call_model(model_name):
-                if "transcribe" in model_name:
-                    res = client.interactions.create(
-                        model=model_name,
-                        input=[{"type": "audio", "uri": uploaded.uri, "mime_type": uploaded.mime_type}],
-                    )
-                    return res.output_text or ""
-                else:
-                    prompt = "Transcreva fielmente todo o áudio a seguir em português com pontuação adequada, sem introduções ou explicações:"
-                    res = client.models.generate_content(
-                        model=model_name,
-                        contents=[uploaded, prompt],
-                    )
-                    return res.text or ""
-
             try:
-                transcription_text = call_model(chosen_model)
-            except Exception as model_err:
-                if chosen_model != fallback_model:
-                    app.logger.warning("Falha ao usar %s (%s). Executando fallback para %s...", chosen_model, model_err, fallback_model)
-                    transcription_text = call_model(fallback_model)
-                else:
-                    raise
-
-            created_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
-            with get_db() as connection:
-                cursor = connection.execute(
-                    "INSERT INTO transcriptions (filename, text, created_at) VALUES (?, ?, ?)",
-                    (Path(audio.filename).name, transcription_text, created_at),
+                audio_content = client.files.upload(
+                    file=temporary_path,
+                    config=types.UploadFileConfig(mime_type=mime_type),
                 )
-                transcription_id = cursor.lastrowid
-            return jsonify(id=transcription_id, filename=Path(audio.filename).name, created_at=created_at, text=transcription_text)
-        finally:
-            if temporary_path:
+            finally:
                 Path(temporary_path).unlink(missing_ok=True)
+
+        chosen_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        fallback_model = "gemini-3.1-flash-lite"
+
+        # Otimização 2: thinking_budget=0 desativa raciocínio desnecessário, tornando a transcrição ultrarrápida
+        gen_config = types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            temperature=0.1,
+        )
+        prompt = "Transcreva fielmente todo o áudio a seguir em português com pontuação adequada, sem introduções ou explicações adicionais:"
+
+        def call_model(model_name):
+            res = client.models.generate_content(
+                model=model_name,
+                contents=[audio_content, prompt],
+                config=gen_config,
+            )
+            return res.text or ""
+
+        try:
+            transcription_text = call_model(chosen_model)
+        except Exception as model_err:
+            if chosen_model != fallback_model:
+                app.logger.warning("Falha ao usar %s (%s). Executando fallback para %s...", chosen_model, model_err, fallback_model)
+                transcription_text = call_model(fallback_model)
+            else:
+                raise
+
+        created_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        with get_db() as connection:
+            cursor = connection.execute(
+                "INSERT INTO transcriptions (filename, text, created_at) VALUES (?, ?, ?)",
+                (Path(audio.filename).name, transcription_text, created_at),
+            )
+            transcription_id = cursor.lastrowid
+        return jsonify(id=transcription_id, filename=Path(audio.filename).name, created_at=created_at, text=transcription_text)
     except Exception as error:
         app.logger.exception("Falha ao transcrever áudio")
         message = str(error)
