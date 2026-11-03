@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from contextlib import contextmanager
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, Response
 from google import genai
 from google.genai import types
 
@@ -87,6 +87,28 @@ def initialize_db():
 
 
 initialize_db()
+
+
+FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#25d366"/>
+      <stop offset="100%" stop-color="#128c7e"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="url(#g)"/>
+  <g transform="translate(12.8, 12.8) scale(1.6)" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+    <line x1="12" y1="19" x2="12" y2="22"/>
+  </g>
+</svg>"""
+
+
+@app.get("/favicon.ico")
+@app.get("/favicon.svg")
+def favicon():
+    return Response(FAVICON_SVG, mimetype="image/svg+xml")
 
 
 @app.get("/")
