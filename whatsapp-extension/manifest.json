@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "TranscreveZap para WhatsApp Web",
+  "version": "2.0.0",
+  "description": "Adiciona transcrição somente às mensagens de voz do WhatsApp Web.",
+  "permissions": ["scripting", "tabCapture", "offscreen"],
+  "host_permissions": [
+    "https://web.whatsapp.com/*",
+    "https://*.whatsapp.net/*",
+    "https://*.fbcdn.net/*",
+    "https://lookaside.fbsbx.com/*",
+    "http://127.0.0.1:5000/*",
+    "http://localhost:5000/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {
+    "default_title": "Ativar captura do TranscreveZap nesta aba"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://web.whatsapp.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

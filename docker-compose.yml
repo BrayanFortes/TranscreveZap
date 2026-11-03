@@ -1,0 +1,23 @@
+services:
+  transcrevezap:
+    build: .
+    container_name: transcrevezap
+    restart: unless-stopped
+    ports:
+      - "5000:8080"
+    environment:
+      PORT: "8080"
+      GEMINI_MODEL: "${GEMINI_MODEL:-gemini-3.8-flash}"
+      TRANSCRIPTIONS_DB: /data/transcriptions.db
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+    secrets:
+      - gemini_api_key
+    volumes:
+      - transcrevezap_data:/data
+
+secrets:
+  gemini_api_key:
+    file: ../.ev/API.txt
+
+volumes:
+  transcrevezap_data:
