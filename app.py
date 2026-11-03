@@ -8,7 +8,8 @@ from flask import Flask, jsonify, render_template, request
 from google import genai
 from google.genai import types
 
-app = Flask(__name__)
+BASE_DIR = Path(__file__).resolve().parent
+app = Flask(__name__, template_folder=str(BASE_DIR / "templates"))
 app.config["MAX_CONTENT_LENGTH"] = 25 * 1024 * 1024
 def get_database_path():
     env_path = os.getenv("TRANSCRIPTIONS_DB")
