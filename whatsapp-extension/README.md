@@ -19,5 +19,5 @@ A extensão adiciona **um botão Transcrever somente às mensagens de voz** grav
 - Esta extensão funciona no WhatsApp Web em navegadores Chromium (Chrome e Edge), no mesmo computador onde o TranscreveZap está rodando.
 - A gravação captura o som da aba durante a reprodução; o áudio continua audível. Evite reproduzir outros sons na aba durante esse período.
 - A integração é para o WhatsApp Web no navegador; ela não aparece no aplicativo nativo do WhatsApp para Windows.
-- Limite: 50 MB por áudio, igual ao app.
+- Limite: 100 MB por áudio, igual ao app.
 - Para usar com uma versão hospedada na nuvem ou em outro computador, será preciso trocar o endereço do servidor e permitir a origem dessa extensão com HTTPS.

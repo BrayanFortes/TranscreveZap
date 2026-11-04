@@ -16,7 +16,7 @@ python app.py
 ```
 
 3. Acesse http://127.0.0.1:5000.
-4. No WhatsApp, salve/compartilhe o áudio para o computador e selecione o arquivo no app. Formatos `.opus`, `.ogg`, `.m4a`, `.mp3`, `.wav` e outros formatos comuns são aceitos; limite de 50 MB.
+4. No WhatsApp, salve/compartilhe o áudio para o computador e selecione o arquivo no app. Formatos `.opus`, `.ogg`, `.m4a`, `.mp3`, `.wav` e outros formatos comuns são aceitos; limite de 100 MB.
 
 Para encerrar, pressione Ctrl+C no PowerShell. A chave é mantida apenas na variável de ambiente daquela janela. Gere uma chave no [Google AI Studio](https://aistudio.google.com/apikey).
 

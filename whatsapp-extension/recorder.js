@@ -44,7 +44,7 @@ function stopAndTranscribe(tabId) {
         const blob = new Blob(chunks, { type: mimeType });
         chunks = [];
         if (blob.size < 2048) throw new Error("Não capturei som suficiente. Ative a captura e reproduza a mensagem novamente.");
-        if (blob.size > 50 * 1024 * 1024) throw new Error("O áudio capturado ultrapassa o limite de 50 MB.");
+        if (blob.size > 100 * 1024 * 1024) throw new Error("O áudio capturado ultrapassa o limite de 100 MB.");
         const form = new FormData();
         form.append("audio", blob, `whatsapp-voz-${Date.now()}.webm`);
         const response = await fetch(TRANSCRIBE_ENDPOINT, { method: "POST", body: form });

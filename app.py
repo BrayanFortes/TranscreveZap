@@ -10,7 +10,7 @@ from google.genai import types
 
 BASE_DIR = Path(__file__).resolve().parent
 app = Flask(__name__, template_folder=str(BASE_DIR / "templates"))
-app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 def get_database_path():
     env_path = os.getenv("TRANSCRIPTIONS_DB")
     if env_path:
@@ -119,7 +119,7 @@ def index():
 
 @app.errorhandler(413)
 def too_large(_error):
-    return jsonify(error="O áudio ultrapassa o limite de 50 MB."), 413
+    return jsonify(error="O áudio ultrapassa o limite de 100 MB."), 413
 
 
 @app.get("/api/historico")
