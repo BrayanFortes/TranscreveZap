@@ -1,6 +1,6 @@
 # TranscreveZap
 
-Aplicativo local para enviar áudios do WhatsApp e receber a transcrição em texto usando o Gemini. É necessária uma chave da Gemini API. A chave fica no servidor, não no navegador.
+Aplicativo local para enviar áudios do WhatsApp e receber a transcrição em texto usando IA. É necessária uma chave de API. A chave fica no servidor, não no navegador.
 
 ## Como iniciar no Windows
 
@@ -11,7 +11,7 @@ Aplicativo local para enviar áudios do WhatsApp e receber a transcrição em te
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-$env:GEMINI_API_KEY="sua-chave-da-api"
+$env:API_KEY="sua-chave-da-api"
 python app.py
 ```
 

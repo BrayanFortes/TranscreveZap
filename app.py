@@ -45,13 +45,13 @@ MIME_TYPES = {
 
 
 def get_api_key():
-    api_key = os.getenv("GEMINI_API_KEY")
-    key_file = os.getenv("GEMINI_API_KEY_FILE")
+    api_key = os.getenv("API_KEY") or os.getenv("GEMINI_API_KEY")
+    key_file = os.getenv("API_KEY_FILE") or os.getenv("GEMINI_API_KEY_FILE")
     if key_file:
         try:
             return Path(key_file).read_text(encoding="utf-8").strip()
         except OSError:
-            app.logger.exception("Não foi possível ler o arquivo da chave Gemini")
+            app.logger.exception("Não foi possível ler o arquivo da chave de API")
             return None
     return api_key
 
@@ -138,7 +138,7 @@ def limpar_historico(_subpath=None):
 def transcrever():
     api_key = get_api_key()
     if not api_key:
-        return jsonify(error="Configure a variável GEMINI_API_KEY antes de iniciar o app."), 503
+        return jsonify(error="Configure a chave de API antes de iniciar o app."), 503
 
     audio = request.files.get("audio")
     if not audio or not audio.filename:
@@ -172,7 +172,7 @@ def transcrever():
             finally:
                 Path(temporary_path).unlink(missing_ok=True)
 
-        chosen_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        chosen_model = os.getenv("AI_MODEL") or os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
         fallback_model = "gemini-3.1-flash-lite"
 
         # Otimização 2: thinking_budget=0 desativa raciocínio desnecessário, tornando a transcrição ultrarrápida
@@ -219,9 +219,9 @@ def transcrever():
         app.logger.exception("Falha ao transcrever áudio")
         message = str(error)
         if "401" in message or "API key" in message or "API_KEY" in message:
-            message = "A chave do Gemini foi recusada. Confira GEMINI_API_KEY."
+            message = "A chave de autenticação foi recusada. Confira a chave de API configurada."
         elif "429" in message or "quota" in message.lower():
-            message = "O Gemini recusou a solicitação por limite ou cota. Confira sua conta e os limites da API."
+            message = "A solicitação foi recusada por limite ou cota. Confira sua conta e os limites da API."
         else:
             message = "Não foi possível transcrever este áudio. Confira sua conexão e tente novamente."
         return jsonify(error=message), 502
