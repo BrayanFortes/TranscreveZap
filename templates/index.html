@@ -1100,6 +1100,12 @@
     function setAudioFile(file) {
       if (!file) return;
 
+      const isVercel = window.location.hostname.includes('vercel.app');
+      if (isVercel && file.size > 4.5 * 1024 * 1024) {
+        showToast('Na Vercel (Serverless), o limite é de 4.5 MB por requisição. Para enviar até 100 MB, execute o TranscreveZap localmente (Docker ou Python).', 'error');
+        return;
+      }
+
       if (file.size > 100 * 1024 * 1024) {
         showToast('O áudio ultrapassa o limite máximo de 100 MB.', 'error');
         return;
@@ -1271,9 +1277,27 @@
           body: formData
         });
 
-        const data = await response.json();
+        let data = null;
+        const rawText = await response.text();
+        try {
+          data = JSON.parse(rawText);
+        } catch (_) {
+          data = null;
+        }
+
         if (!response.ok) {
-          throw new Error(data.error || 'Falha ao processar o áudio.');
+          if (response.status === 413) {
+            const isVercel = window.location.hostname.includes('vercel.app');
+            if (isVercel) {
+              throw new Error('A Vercel rejeitou o áudio (limite de 4.5 MB em Serverless). Execute o TranscreveZap localmente via Docker ou Python para processar até 100 MB.');
+            }
+            throw new Error(data?.error || 'O áudio ultrapassa o limite de 100 MB permitido pelo servidor.');
+          }
+          throw new Error(data?.error || (rawText && rawText.length < 200 ? rawText : 'Falha ao processar o áudio.'));
+        }
+
+        if (!data) {
+          throw new Error('Resposta inválida do servidor.');
         }
 
         clearInterval(loadingInterval);
@@ -1283,7 +1307,7 @@
         showToast('Transcrição concluída com sucesso!');
         addHistoryEntry({
           id: data.id || 'tx_' + Date.now(),
-          filename: data.filename || selectedFile?.name || 'audio',
+          filename: data.filename || currentAudioFile?.name || 'audio',
           text: data.text,
           created_at: data.created_at || new Date().toISOString(),
           duration: data.duration

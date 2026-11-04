@@ -133,11 +133,17 @@ async function transcribe(file) {
       const form = new FormData();
       form.append("audio", file, file.name);
       const response = await fetch(endpoint, { method: "POST", body: form });
-      const payload = await response.json().catch(() => ({}));
+      const rawText = await response.text();
+      let payload = {};
+      try { payload = JSON.parse(rawText); } catch (_) {}
       if (response.ok) {
         return payload.text || "";
       }
-      lastError = new Error(payload.error || "O TranscreveZap não conseguiu transcrever o áudio.");
+      if (response.status === 413 && endpoint.includes("vercel.app")) {
+        lastError = new Error("O áudio ultrapassa o limite de 4.5 MB da Vercel. Inicie o TranscreveZap localmente (http://127.0.0.1:5000) para processar até 100 MB.");
+      } else {
+        lastError = new Error(payload.error || (rawText && rawText.length < 200 ? rawText : "O TranscreveZap não conseguiu transcrever o áudio."));
+      }
     } catch (err) {
       lastError = err;
     }
