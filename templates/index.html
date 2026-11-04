@@ -1100,8 +1100,8 @@
     function setAudioFile(file) {
       if (!file) return;
 
-      if (file.size > 25 * 1024 * 1024) {
-        showToast('O áudio ultrapassa o limite máximo de 25 MB.', 'error');
+      if (file.size > 50 * 1024 * 1024) {
+        showToast('O áudio ultrapassa o limite máximo de 50 MB.', 'error');
         return;
       }
 

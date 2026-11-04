@@ -2,7 +2,7 @@ const TRANSCRIBE_ENDPOINTS = [
   "http://127.0.0.1:5000/api/transcrever",
   "https://transcreve-zap.vercel.app/api/transcrever"
 ];
-const MAX_AUDIO_BYTES = 25 * 1024 * 1024;
+const MAX_AUDIO_BYTES = 50 * 1024 * 1024;
 
 function extensionForMime(mimeType) {
   const normalized = (mimeType || "").split(";")[0].toLowerCase();
@@ -49,7 +49,7 @@ function installWhatsAppAudioHook() {
   }
 
   function sendCapturedBlob(blob, mimeType) {
-    if (!requestId || !blob || blob.size < 4096 || blob.size > 25 * 1024 * 1024) return;
+    if (!requestId || !blob || blob.size < 4096 || blob.size > 50 * 1024 * 1024) return;
     const activeRequest = requestId;
     requestId = null;
     clearTimeout(expireTimer);
@@ -99,7 +99,7 @@ function installWhatsAppAudioHook() {
   if (window.AudioContext?.prototype?.decodeAudioData) {
     const originalDecodeAudioData = AudioContext.prototype.decodeAudioData;
     AudioContext.prototype.decodeAudioData = function (audioData, ...args) {
-      if (requestId && audioData instanceof ArrayBuffer && audioData.byteLength <= 25 * 1024 * 1024) {
+      if (requestId && audioData instanceof ArrayBuffer && audioData.byteLength <= 50 * 1024 * 1024) {
         const mimeType = mimeFromBuffer(audioData);
         if (mimeType) sendCapturedBlob(new Blob([audioData.slice(0)], { type: mimeType }), mimeType);
       }
@@ -125,7 +125,7 @@ function isAllowedWhatsAppMediaUrl(value) {
 
 async function transcribe(file) {
   if (!file || file.size === 0) throw new Error("O áudio está vazio ou não foi carregado.");
-  if (file.size > MAX_AUDIO_BYTES) throw new Error("O áudio ultrapassa o limite de 25 MB.");
+  if (file.size > MAX_AUDIO_BYTES) throw new Error("O áudio ultrapassa o limite de 50 MB.");
 
   let lastError = null;
   for (const endpoint of TRANSCRIBE_ENDPOINTS) {
