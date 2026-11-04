@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#128c7e">
-  <title>TranscreveZap — Transcrição de Áudio com Gemini AI</title>
+  <title>TranscreveZap — Transcrição de Áudio com IA</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2325d366'/%3E%3Cstop offset='100%25' stop-color='%23128c7e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cg transform='translate(12.8, 12.8) scale(1.6)' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z'/%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'/%3E%3Cline x1='12' y1='19' x2='12' y2='22'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="alternate icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2325d366'/%3E%3Cstop offset='100%25' stop-color='%23128c7e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cg transform='translate(12.8, 12.8) scale(1.6)' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z'/%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'/%3E%3Cline x1='12' y1='19' x2='12' y2='22'/%3E%3C/g%3E%3C/svg%3E">
@@ -847,7 +847,7 @@
         </div>
         <div class="brand-title">
           Transcreve<span>Zap</span>
-          <span class="ai-badge">Gemini AI</span>
+          <span class="ai-badge">IA</span>
         </div>
       </a>
       <div class="header-actions">
@@ -867,7 +867,7 @@
     <section class="hero">
       <p class="eyebrow">Áudio para texto instantâneo</p>
       <h1>Seus áudios do WhatsApp, <span>em palavras precisas.</span></h1>
-      <p class="subtitle">Envie qualquer áudio recebido (OPUS, OGG, MP3, M4A, WAV) ou grave diretamente pelo navegador para transcrição imediata pelo Gemini.</p>
+      <p class="subtitle">Envie qualquer áudio recebido (OPUS, OGG, MP3, M4A, WAV) ou grave diretamente pelo navegador para transcrição imediata com IA.</p>
     </section>
 
     <!-- Main Transcription Card -->
@@ -932,13 +932,13 @@
       <!-- Submit Action Button -->
       <button class="btn-transcribe" id="btn-transcribe" type="button" disabled>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        <span>Transcrever com Gemini</span>
+        <span>Transcrever com IA</span>
       </button>
 
       <!-- Loading State Indicator -->
       <div class="loading-pulse" id="loading-indicator" role="status" aria-live="polite">
         <div class="spinner"></div>
-        <span id="loading-text">Processando áudio com o modelo Gemini... (0s)</span>
+        <span id="loading-text">Processando áudio com IA... (0s)</span>
       </div>
 
       <!-- Transcription Result Display -->
@@ -999,7 +999,7 @@
 
     <!-- Footer -->
     <footer>
-      <p>TranscreveZap · Transcrição executada de ponta a ponta via Gemini 3.5 API sem retenção permanente de áudio.</p>
+      <p>TranscreveZap · Transcrição executada de ponta a ponta via IA sem retenção permanente de áudio.</p>
     </footer>
   </div>
 
@@ -1265,10 +1265,10 @@
       resultSection.classList.remove('visible');
 
       let secondsElapsed = 0;
-      loadingText.textContent = `Processando áudio com Gemini AI... (${secondsElapsed}s)`;
+      loadingText.textContent = `Processando áudio com IA... (${secondsElapsed}s)`;
       loadingInterval = setInterval(() => {
         secondsElapsed++;
-        loadingText.textContent = `Processando áudio com Gemini AI... (${secondsElapsed}s)`;
+        loadingText.textContent = `Processando áudio com IA... (${secondsElapsed}s)`;
       }, 1000);
 
       try {
