@@ -21,8 +21,7 @@ Nos termos do **Art. 5º, VI da LGPD** e do **Art. 11 da Resolução CD/ANPD nº
 - **Controlador do Projeto / Desenvolvedor:** Brayan Fortes (Mantenedor do TranscreveZap).
 - **Dispensa Legal de Indicação de Encarregado (DPO):** Por se enquadrar como pessoa natural / desenvolvedor independente e agente de tratamento de pequeno porte (Art. 2º, I da Resolução CD/ANPD nº 2/2022), o responsável está **legalmente dispensado da obrigatoriedade de indicar um Encarregado pelo Tratamento de Dados Pessoais (DPO)** (Art. 11 da Resolução c/c Art. 41 da LGPD).
 - **Canal Direto de Comunicação com os Titulares (Art. 11, § 1º da Resolução):**
-  - Repositório oficial no GitHub: [github.com/BrayanFortes/TranscreveZap/issues](https://github.com/BrayanFortes/TranscreveZap/issues)
-  - E-mail direto para privacidade/suporte: `brayan.fortes1@gmail.com`
+  - Repositório oficial e suporte no GitHub: [github.com/BrayanFortes/TranscreveZap/issues](https://github.com/BrayanFortes/TranscreveZap/issues)
 - **Prazos em Dobro para Agentes de Pequeno Porte:** Conforme o **Art. 14 da Resolução CD/ANPD nº 2/2022**, os prazos de resposta a solicitações dos titulares de dados e envio de declarações são computados em dobro (em até 30 dias para declaração completa).
 
 > **Nota para implantações locais/auto-hospedadas (Self-Hosted):** Quando o usuário executa o TranscreveZap em seu próprio computador ou servidor local (via Python/Docker) utilizando sua própria chave de API privada, o próprio usuário atua como o único e exclusivo Controlador e Operador do seu ambiente local, não havendo qualquer envio de dados para servidores centrais do TranscreveZap.
@@ -127,7 +126,7 @@ O titular dos dados pessoais tem direito a obter do TranscreveZap, a qualquer mo
 
 ### Como Exercer os seus Direitos:
 - **Exclusão de Registros Locais:** Clique no botão de lixeira individual ou no botão *"Limpar Histórico"* no painel do TranscreveZap. Essa ação expurga de forma irreversível os textos gravados no seu dispositivo.
-- **Canal Direto de Atendimento ao Titular:** Envie sua solicitação para `brayan.fortes1@gmail.com` ou abra uma manifestação no repositório GitHub. A resposta será providenciada nos prazos regulamentares da ANPD.
+- **Canal Direto de Atendimento ao Titular:** Abra uma manifestação diretamente no repositório oficial no GitHub ([Aba Issues](https://github.com/BrayanFortes/TranscreveZap/issues)). A resposta será providenciada nos prazos regulamentares da ANPD.
 
 ---
 
