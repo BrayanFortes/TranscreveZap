@@ -14,14 +14,15 @@ Esta Política de Privacidade tem por objetivo esclarecer de forma transparente,
 
 ---
 
-## 2. IDENTIFICAÇÃO DO CONTROLADOR E CANAL DE COMUNICAÇÃO (DPO)
+## 2. IDENTIFICAÇÃO DO CONTROLADOR E DISPENSA LEGAL DE DPO (RESOLUÇÃO CD/ANPD Nº 2/2022)
 
-Nos termos do **Art. 5º, VI e Art. 41 da LGPD**, informamos os agentes e os canais de contato:
+Nos termos do **Art. 5º, VI da LGPD** e do **Art. 11 da Resolução CD/ANPD nº 2/2022**:
 
-- **Controlador do Serviço:** TranscreveZap Tecnologia e Soluções Digitais.
-- **Encarregado pelo Tratamento de Dados Pessoais (DPO - Data Protection Officer):** Encarregado de Proteção de Dados / Equipe de Privacidade TranscreveZap.
-- **Canal Direto de Comunicação e Atendimento LGPD:** `privacidade@transcrevezap.com.br` (ou através do canal oficial de suporte disponibilizado na aplicação).
-- **Prazo de Atendimento:** As requisições de confirmação de tratamento e acesso aos dados serão respondidas de forma imediata (em formato simplificado) ou em até **15 (quinze) dias**, conforme estipulado pelo **Art. 19, II da LGPD**.
+- **Controlador do Projeto / Desenvolvedor:** Brayan Fortes (Mantenedor do TranscreveZap).
+- **Dispensa Legal de Indicação de Encarregado (DPO):** Por se enquadrar como pessoa natural / desenvolvedor independente e agente de tratamento de pequeno porte (Art. 2º, I da Resolução CD/ANPD nº 2/2022), o responsável está **legalmente dispensado da obrigatoriedade de indicar um Encarregado pelo Tratamento de Dados Pessoais (DPO)** (Art. 11 da Resolução c/c Art. 41 da LGPD).
+- **Canal Direto de Comunicação com os Titulares (Art. 11, § 1º da Resolução):**
+  - Repositório oficial e suporte no GitHub: [github.com/BrayanFortes/TranscreveZap/issues](https://github.com/BrayanFortes/TranscreveZap/issues)
+- **Prazos em Dobro para Agentes de Pequeno Porte:** Conforme o **Art. 14 da Resolução CD/ANPD nº 2/2022**, os prazos de resposta a solicitações dos titulares de dados e envio de declarações são computados em dobro (em até 30 dias para declaração completa).
 
 > **Nota para implantações locais/auto-hospedadas (Self-Hosted):** Quando o usuário executa o TranscreveZap em seu próprio computador ou servidor local (via Python/Docker) utilizando sua própria chave de API privada, o próprio usuário atua como o único e exclusivo Controlador e Operador do seu ambiente local, não havendo qualquer envio de dados para servidores centrais do TranscreveZap.
 
@@ -125,7 +126,7 @@ O titular dos dados pessoais tem direito a obter do TranscreveZap, a qualquer mo
 
 ### Como Exercer os seus Direitos:
 - **Exclusão de Registros Locais:** Clique no botão de lixeira individual ou no botão *"Limpar Histórico"* no painel do TranscreveZap. Essa ação expurga de forma irreversível os textos gravados no seu dispositivo.
-- **Canal Formal do Encarregado:** Envie um e-mail para `privacidade@transcrevezap.com.br` especificando a sua solicitação. O canal responderá dentro dos prazos legais do Art. 19 da LGPD.
+- **Canal Direto de Atendimento ao Titular:** Abra uma manifestação diretamente no repositório oficial no GitHub ([Aba Issues](https://github.com/BrayanFortes/TranscreveZap/issues)). A resposta será providenciada nos prazos regulamentares da ANPD.
 
 ---
 

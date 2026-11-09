@@ -20,6 +20,9 @@ class SecurityAuditTestCase(unittest.TestCase):
         self.assertEqual(response.headers.get("Referrer-Policy"), "strict-origin-when-cross-origin")
         self.assertIn("Content-Security-Policy", response.headers)
         self.assertIn("default-src 'self'", response.headers.get("Content-Security-Policy"))
+        html = response.get_data(as_text=True)
+        self.assertIn('id="privacy-banner"', html)
+        self.assertIn('id="btn-accept-privacy"', html)
 
     def test_cors_headers_allowed_for_extension_and_local(self):
         headers = {"Origin": "chrome-extension://abcdefghijklmnop"}
@@ -92,7 +95,9 @@ class SecurityAuditTestCase(unittest.TestCase):
             html = response.get_data(as_text=True)
             self.assertIn("Política de Privacidade", html)
             self.assertIn("LGPD", html)
-            self.assertIn("privacidade@transcrevezap.com.br", html)
+            self.assertIn("TranscreveZap/issues", html)
+            self.assertIn("Resolução CD/ANPD", html)
+            self.assertNotIn("@gmail.com", html)
 
     def test_browser_client_code_does_not_expose_api_keys(self):
         secret_key = "AIzaSySuperSecretBackendKey987654321"

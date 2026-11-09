@@ -434,8 +434,8 @@
           <div class="highlight-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
-          <div class="highlight-title">Canal do DPO</div>
-          <div class="highlight-desc">Atendimento formal e imediato aos direitos dos titulares via e-mail dedicado.</div>
+          <div class="highlight-title">Canal do Titular</div>
+          <div class="highlight-desc">Dispensa legal de DPO (Res. CD/ANPD nº 2/2022). Atendimento via repositório GitHub.</div>
         </div>
       </div>
 
@@ -449,13 +449,14 @@
           Nossa arquitetura técnica assegura que os arquivos de áudio enviados para transcrição tenham ciclo de vida estritamente transitório: são convertidos em memória e <strong>imediatamente descartados</strong>, eliminando qualquer risco de vazamento ou acesso indevido em repouso.
         </p>
 
-        <h2>2. Identificação do Controlador e Encarregado (DPO) <span class="article-badge">LGPD Art. 41</span></h2>
+        <h2>2. Identificação do Controlador e Dispensa Legal de DPO <span class="article-badge">Resolução CD/ANPD nº 2/2022</span></h2>
         <p>
-          Para os fins da Lei Geral de Proteção de Dados (Lei nº 13.709/2018), o serviço é gerido pelo TranscreveZap, que disponibiliza o Encarregado de Proteção de Dados (DPO) como canal oficial de comunicação:
+          Para os fins da Lei Geral de Proteção de Dados (Lei nº 13.709/2018), o serviço é desenvolvido e mantido por <strong>Brayan Fortes</strong>:
         </p>
         <ul>
-          <li><strong>E-mail de Privacidade e DPO:</strong> <code>privacidade@transcrevezap.com.br</code></li>
-          <li><strong>Prazos Legais:</strong> Solicitações de confirmação e acesso são respondidas de imediato de modo simplificado ou em até 15 dias para declarações integrais (Art. 19, II da LGPD).</li>
+          <li><strong>Dispensa Legal de DPO:</strong> Por se enquadrar como desenvolvedor independente / agente de tratamento de pequeno porte (Art. 2º, I da Resolução CD/ANPD nº 2/2022), o projeto está <strong>legalmente dispensado da indicação formal de um Encarregado pelo Tratamento de Dados Pessoais (DPO)</strong>, nos termos do Art. 11 da referida Resolução.</li>
+          <li><strong>Canal Direto de Atendimento ao Titular:</strong> O canal para recebimento de solicitações, dúvidas ou exercício de direitos é o repositório oficial no GitHub (<a href="https://github.com/BrayanFortes/TranscreveZap/issues" target="_blank" rel="noopener">github.com/BrayanFortes/TranscreveZap/issues</a>).</li>
+          <li><strong>Prazos Diferenciados em Dobro:</strong> Conforme o Art. 14 da Resolução CD/ANPD nº 2/2022, os prazos de resposta aos titulares são computados em dobro.</li>
           <li><strong>Aplicações Locais (Self-Hosted):</strong> Ao rodar o sistema localmente em sua máquina via Python ou Docker com sua própria chave de API, o usuário atua como o único e soberano Controlador de seus dados e infraestrutura.</li>
         </ul>
 
@@ -559,14 +560,16 @@
         </p>
       </div>
 
-      <!-- DPO Card -->
+      <!-- Contact Card -->
       <div class="dpo-card">
-        <h3>Canal do Encarregado pelo Tratamento de Dados (DPO)</h3>
-        <p>Dúvidas sobre o tratamento de dados pessoais ou solicitações formais com base na LGPD? Fale diretamente com nossa equipe de privacidade.</p>
-        <a href="mailto:privacidade@transcrevezap.com.br" class="dpo-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          privacidade@transcrevezap.com.br
-        </a>
+        <h3>Canal de Atendimento aos Titulares de Dados</h3>
+        <p>Dispensa legal de DPO conforme o Art. 11 da Resolução CD/ANPD nº 2/2022. Dúvidas sobre o tratamento de dados pessoais ou solicitações com base na LGPD? Abra uma manifestação diretamente no repositório oficial:</p>
+        <div style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+          <a href="https://github.com/BrayanFortes/TranscreveZap/issues" target="_blank" rel="noopener" class="dpo-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            Abrir Chamado no GitHub Issues
+          </a>
+        </div>
       </div>
     </main>
 
