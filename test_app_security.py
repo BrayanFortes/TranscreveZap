@@ -92,7 +92,8 @@ class SecurityAuditTestCase(unittest.TestCase):
             html = response.get_data(as_text=True)
             self.assertIn("Política de Privacidade", html)
             self.assertIn("LGPD", html)
-            self.assertIn("privacidade@transcrevezap.com.br", html)
+            self.assertIn("brayan.fortes1@gmail.com", html)
+            self.assertIn("Resolução CD/ANPD", html)
 
     def test_browser_client_code_does_not_expose_api_keys(self):
         secret_key = "AIzaSySuperSecretBackendKey987654321"
