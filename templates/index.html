@@ -807,6 +807,19 @@
       line-height: 1.6;
     }
 
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      transition: var(--transition);
+    }
+
+    footer a:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -1000,6 +1013,10 @@
     <!-- Footer -->
     <footer>
       <p>TranscreveZap · Transcrição executada de ponta a ponta via IA sem retenção permanente de áudio.</p>
+      <p style="margin-top: 6px;">
+        <a href="/privacidade" target="_blank" rel="noopener">Política de Privacidade & Proteção de Dados (LGPD)</a> · 
+        <span>Conforme Lei nº 13.709/2018</span>
+      </p>
     </footer>
   </div>
 

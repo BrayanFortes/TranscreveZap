@@ -35,3 +35,12 @@ O contêiner usa a variável `PORT` para aceitar a porta fornecida pelo provedor
 ## Extensão para WhatsApp Web
 
 Para adicionar os controles de transcrição ao WhatsApp Web, carregue sem compactação a pasta `whatsapp-extension` em `chrome://extensions` ou `edge://extensions`. O Docker do TranscreveZap precisa estar ligado no mesmo computador. Consulte o [guia da extensão](whatsapp-extension/README.md) para os passos e limitações.
+
+## Privacidade e Conformidade LGPD
+
+O TranscreveZap foi desenvolvido com arquitetura de **Privacidade por Design e Retenção Zero**:
+- **Zero Retenção de Áudio:** Nenhum áudio enviado é mantido em banco de dados permanente no servidor. O processamento é estritamente volátil (memória RAM / arquivos temporários destruídos imediatamente após o envio).
+- **Sem Biometria Vocal:** Apenas conversão acústico-fonética de voz para texto (speech-to-text). Não há reconhecimento facial, geração de *voiceprints* ou identificação biométrica de falantes.
+- **Histórico 100% Local:** As transcrições residem com exclusividade no `localStorage` do navegador do usuário, com exclusão sob demanda a qualquer momento.
+- **Conformidade Legal:** Total alinhamento aos Artigos 6º, 7º, 9º, 11, 18, 33, 41, 43 e 46 da **LGPD (Lei nº 13.709/2018)**.
+- Consulte a documentação completa em [POLITICA_DE_PRIVACIDADE.md](POLITICA_DE_PRIVACIDADE.md) ou pela rota `/privacidade` no navegador.
