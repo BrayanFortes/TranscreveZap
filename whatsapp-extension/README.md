@@ -21,3 +21,11 @@ A extensão adiciona **um botão Transcrever somente às mensagens de voz** grav
 - A integração é para o WhatsApp Web no navegador; ela não aparece no aplicativo nativo do WhatsApp para Windows.
 - Limite: 100 MB por áudio, igual ao app.
 - Para usar com uma versão hospedada na nuvem ou em outro computador, será preciso trocar o endereço do servidor e permitir a origem dessa extensão com HTTPS.
+
+## Privacidade e LGPD na Extensão
+
+A extensão opera sob o princípio da menor invasividade:
+- Não lê mensagens de texto, contatos, fotos de perfil ou status da sua conta de WhatsApp.
+- A captura de áudio da aba só acontece quando você clica deliberadamente no botão de transcrição de uma mensagem.
+- O áudio capturado é processado exclusivamente para a conversão de voz em texto, sem identificação biométrica ou armazenamento permanente no servidor.
+- Em conformidade integral com a LGPD (Lei nº 13.709/2018). Veja a [Política de Privacidade](../POLITICA_DE_PRIVACIDADE.md).

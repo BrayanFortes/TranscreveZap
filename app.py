@@ -156,6 +156,12 @@ def index():
     return render_template("index.html")
 
 
+@app.get("/privacidade")
+@app.get("/politica-de-privacidade")
+def privacidade():
+    return render_template("privacidade.html")
+
+
 @app.errorhandler(413)
 def too_large(_error):
     return jsonify(error="O áudio ultrapassa o limite de 100 MB."), 413

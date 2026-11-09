@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#128c7e">
+  <title>Política de Privacidade & LGPD — TranscreveZap</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2325d366'/%3E%3Cstop offset='100%25' stop-color='%23128c7e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cg transform='translate(12.8, 12.8) scale(1.6)' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z'/%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'/%3E%3Cline x1='12' y1='19' x2='12' y2='22'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="alternate icon" href="/favicon.ico">
+  <style>
+    :root {
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --bg-body: #f0f2f5;
+      --bg-card: #ffffff;
+      --bg-surface: #f7f9fa;
+      --bg-surface-hover: #eef2f5;
+      --border-color: #e2e8f0;
+      --border-focus: #00a884;
+      --text-primary: #111b21;
+      --text-secondary: #54656f;
+      --text-muted: #8696a0;
+      --accent: #00a884;
+      --accent-hover: #029070;
+      --accent-light: #e7f7f3;
+      --accent-dark: #075e54;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --card-shadow: 0 4px 20px -2px rgba(18, 140, 126, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #0b141a;
+      --bg-card: #111b21;
+      --bg-surface: #202c33;
+      --bg-surface-hover: #2a3942;
+      --border-color: #222e35;
+      --border-focus: #00a884;
+      --text-primary: #e9edef;
+      --text-secondary: #aebac1;
+      --text-muted: #667781;
+      --accent: #00a884;
+      --accent-hover: #00bfa5;
+      --accent-light: #18332d;
+      --accent-dark: #00a884;
+      --danger: #f87171;
+      --danger-light: #451a1a;
+      --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wrap {
+      width: min(880px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 60px;
+    }
+
+    /* Header Nav */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .back-btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      background: var(--bg-surface-hover);
+      color: var(--text-primary);
+    }
+
+    /* Main Policy Card */
+    .policy-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--card-shadow);
+    }
+
+    @media (max-width: 640px) {
+      .policy-container {
+        padding: 24px 18px;
+      }
+    }
+
+    .policy-header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .lgpd-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .policy-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .policy-meta {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Highlights Grid */
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      margin: 32px 0 40px;
+    }
+
+    .highlight-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .highlight-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent-light);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+    }
+
+    .highlight-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .highlight-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Content Typography & Sections */
+    .policy-body h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 36px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .article-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--bg-surface-hover);
+      color: var(--text-secondary);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .policy-body h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 20px 0 8px;
+    }
+
+    .policy-body p {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      text-align: justify;
+    }
+
+    .policy-body ul, .policy-body ol {
+      margin: 0 0 16px 22px;
+      color: var(--text-secondary);
+      font-size: 14.5px;
+    }
+
+    .policy-body li {
+      margin-bottom: 6px;
+    }
+
+    .policy-body strong {
+      color: var(--text-primary);
+    }
+
+    /* Informative Callout Boxes */
+    .callout {
+      background: var(--bg-surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .callout.alert {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Table */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 700;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* DPO Contact Card */
+    .dpo-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-top: 36px;
+      text-align: center;
+    }
+
+    .dpo-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .dpo-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .dpo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 999px;
+      transition: var(--transition);
+    }
+
+    .dpo-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 36px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Navigation Top -->
+    <header class="top-nav">
+      <a href="/" class="back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Voltar ao TranscreveZap
+      </a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Alternar tema escuro/claro" title="Alternar tema">
+        <svg id="theme-icon-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>
+        <svg id="theme-icon-light" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="policy-container">
+      <div class="policy-header">
+        <div class="lgpd-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Conforme LGPD & ANPD
+        </div>
+        <h1>Política de Privacidade e Proteção de Dados</h1>
+        <p class="policy-meta">TranscreveZap · Em conformidade com a Lei Federal nº 13.709/2018 (LGPD) · Atualizado em Novembro de 2026</p>
+      </div>
+
+      <!-- Highlights Grid -->
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="highlight-title">Zero Retenção</div>
+          <div class="highlight-desc">Nenhum arquivo de áudio é mantido no servidor. Processamento efêmero em memória.</div>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="highlight-title">Histórico 100% Local</div>
+          <div class="highlight-desc">Suas transcrições residem exclusivamente no seu próprio navegador (localStorage).</div>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+          </div>
+          <div class="highlight-title">Sem Biometria Vocal</div>
+          <div class="highlight-desc">Apenas conversão fonética acústica. Não há reconhecimento nem perfis biométricos.</div>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="highlight-title">Canal do DPO</div>
+          <div class="highlight-desc">Atendimento formal e imediato aos direitos dos titulares via e-mail dedicado.</div>
+        </div>
+      </div>
+
+      <!-- Policy Body -->
+      <div class="policy-body">
+        <h2>1. Apresentação e Princípio da Efemeridade <span class="article-badge">LGPD Art. 6º e 9º</span></h2>
+        <p>
+          O <strong>TranscreveZap</strong> foi construído sob o conceito de <em>Privacy by Design</em> (Privacidade desde a Concepção). Nosso propósito é permitir que usuários leiam o conteúdo em texto de mensagens de voz recebidas no WhatsApp com agilidade, sem renunciar à segurança e à confidencialidade das comunicações.
+        </p>
+        <p>
+          Nossa arquitetura técnica assegura que os arquivos de áudio enviados para transcrição tenham ciclo de vida estritamente transitório: são convertidos em memória e <strong>imediatamente descartados</strong>, eliminando qualquer risco de vazamento ou acesso indevido em repouso.
+        </p>
+
+        <h2>2. Identificação do Controlador e Encarregado (DPO) <span class="article-badge">LGPD Art. 41</span></h2>
+        <p>
+          Para os fins da Lei Geral de Proteção de Dados (Lei nº 13.709/2018), o serviço é gerido pelo TranscreveZap, que disponibiliza o Encarregado de Proteção de Dados (DPO) como canal oficial de comunicação:
+        </p>
+        <ul>
+          <li><strong>E-mail de Privacidade e DPO:</strong> <code>privacidade@transcrevezap.com.br</code></li>
+          <li><strong>Prazos Legais:</strong> Solicitações de confirmação e acesso são respondidas de imediato de modo simplificado ou em até 15 dias para declarações integrais (Art. 19, II da LGPD).</li>
+          <li><strong>Aplicações Locais (Self-Hosted):</strong> Ao rodar o sistema localmente em sua máquina via Python ou Docker com sua própria chave de API, o usuário atua como o único e soberano Controlador de seus dados e infraestrutura.</li>
+        </ul>
+
+        <h2>3. Inventário de Dados Tratados <span class="article-badge">LGPD Art. 7º</span></h2>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Dado Pessoal</th>
+                <th>Finalidade</th>
+                <th>Base Legal (LGPD)</th>
+                <th>Armazenamento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Arquivo de Áudio</strong></td>
+                <td>Conversão fonética de voz em texto a pedido do usuário.</td>
+                <td>Execução de Contrato (Art. 7º, V) e Consentimento (Art. 7º, I)</td>
+                <td><strong>Volátil / Efêmero</strong>: Destruído imediatamente após a resposta.</td>
+              </tr>
+              <tr>
+                <td><strong>Endereço IP</strong></td>
+                <td>Controle de taxa (rate limit), defesa contra negação de serviço e proteção da API.</td>
+                <td>Legítimo Interesse (Art. 7º, IX) e Marco Civil da Internet (Art. 15)</td>
+                <td>Memória RAM volátil por 60 segundos (janela deslizante). Sem banco de dados.</td>
+              </tr>
+              <tr>
+                <td><strong>Texto Transcrito</strong></td>
+                <td>Apresentação do resultado ao usuário na tela.</td>
+                <td>Execução de Contrato / Serviço (Art. 7º, V)</td>
+                <td>Salvo com exclusividade no <code>localStorage</code> do navegador do usuário.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <div class="callout-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Não Coletamos Dados Pessoais Cadastrais
+          </div>
+          O TranscreveZap não exige cadastro prévio com CPF, RG, telefone ou endereço para utilização básica, tampouco realiza comercialização de bancos de dados ou compartilhamento com birôs de crédito e redes de publicidade.
+        </div>
+
+        <h2>4. Transcrição Fonética vs. Dados Biométricos <span class="article-badge">LGPD Art. 5º, II e Art. 11</span></h2>
+        <p>
+          Esclarece-se expressamente aos titulares e às autoridades fiscalizatórias (ANPD) que o TranscreveZap <strong>NÃO realiza reconhecimento biométrico de voz</strong>.
+        </p>
+        <p>
+          O processamento limita-se à decodificação acústico-fonética das frequências mecânicas para transformá-las nas palavras equivalentes do dicionário português. <strong>Não são geradas assinaturas vocais (<em>voiceprints</em>)</strong>, nem parâmetros fisiológicos capazes de identificar a identidade biométrica do locutor.
+        </p>
+
+        <h2>5. Compartilhamento e Transferência Internacional <span class="article-badge">LGPD Art. 33 e 39</span></h2>
+        <p>
+          Para viabilizar a inferência com inteligência artificial generativa de ponta, o TranscreveZap conecta-se de forma criptografada à <strong>API do Google Gemini (Google LLC)</strong>:
+        </p>
+        <ul>
+          <li>Os fluxos de áudio são transmitidos via conexão HTTPS/TLS com chaves cifradas.</li>
+          <li>Os termos corporativos da API de IA estabelecem que os dados processados via API não são aproveitados para treinamento de modelos públicos.</li>
+          <li>A transferência internacional de dados para os servidores em nuvem da Google e da infraestrutura de hospedagem é respaldada pelo <strong>Art. 33, II e IX da LGPD</strong> e pelas diretrizes da ANPD (Resolução CD/ANPD nº 19/2024), mediante a observância de rigorosas salvaguardas contratuais.</li>
+        </ul>
+
+        <h2>6. Medidas Técnicas de Segurança da Informação <span class="article-badge">LGPD Art. 46</span></h2>
+        <p>
+          Adotamos políticas preventivas e proteções ativas contra acessos desautorizados e abusos:
+        </p>
+        <ul>
+          <li><strong>Criptografia em Trânsito:</strong> Comunicação com TLS moderno e certificados de segurança válidos.</li>
+          <li><strong>Cabeçalhos HTTP Estritos:</strong> <code>Content-Security-Policy</code>, <code>X-Frame-Options: DENY</code>, <code>X-Content-Type-Options: nosniff</code> e <code>Permissions-Policy</code>.</li>
+          <li><strong>Limitação de Taxa (Rate Limiter):</strong> Algoritmo em memória que impede ataques distribuídos e abusos de força bruta.</li>
+          <li><strong>Proteção Anti-Injeção de Prompt:</strong> Instruções no transcritor para garantir transcrição literal e impedir execução inadvertida de comandos maliciosos contidos no áudio.</li>
+        </ul>
+
+        <h2>7. Direitos dos Titulares de Dados <span class="article-badge">LGPD Art. 18</span></h2>
+        <p>
+          Em atendimento ao Art. 18 da LGPD, garantimos a você o pleno exercício de seus direitos:
+        </p>
+        <ol>
+          <li><strong>Acesso e Confirmação:</strong> Você pode visualizar todas as transcrições salvas diretamente na tela do aplicativo.</li>
+          <li><strong>Exclusão Imediata e Irreversível:</strong> Pelo botão <em>"Excluir"</em> em cada item ou <em>"Limpar Histórico"</em>, você apaga permanentemente todos os dados armazenados no seu navegador. Como o servidor não retém seus áudios, nenhum resquício subsiste.</li>
+          <li><strong>Portabilidade:</strong> Você pode baixar suas transcrições em formato de arquivo de texto simples (.txt) com um único clique.</li>
+          <li><strong>Revogação de Consentimento e Dúvidas:</strong> Podem ser encaminhadas diretamente ao nosso Encarregado através do canal formal de atendimento.</li>
+        </ol>
+
+        <h2>8. Responsabilidade do Usuário e Excludentes <span class="article-badge">LGPD Art. 43</span></h2>
+        <div class="callout alert">
+          <div class="callout-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Uso Lícito e Responsabilidade Individual
+          </div>
+          O usuário que submete mensagens de áudio declara possuir justa causa e legitimidade sobre o conteúdo (sendo emissor ou destinatário da comunicação privada). É estritamente vedado o uso da ferramenta para fins ilícitos, espionagem, violação de sigilo profissional ou quebra de segredo judicial.
+        </div>
+        <p>
+          Consoante o <strong>Art. 43, inciso III da LGPD</strong>, o TranscreveZap não será responsabilizado por eventuais ilicitudes cometidas exclusivamente por usuários ou terceiros na obtenção indevida ou divulgação desautorizada de comunicações verbais.
+        </p>
+
+        <h2>9. Extensão para WhatsApp Web</h2>
+        <p>
+          A extensão do TranscreveZap opera exclusivamente sob comando do usuário, acionando a captura de áudio apenas na mensagem específica clicada. A extensão <strong>não possui acesso, não lê e não transmite seus contatos, fotos de perfil ou mensagens de texto de suas conversas</strong>.
+        </p>
+      </div>
+
+      <!-- DPO Card -->
+      <div class="dpo-card">
+        <h3>Canal do Encarregado pelo Tratamento de Dados (DPO)</h3>
+        <p>Dúvidas sobre o tratamento de dados pessoais ou solicitações formais com base na LGPD? Fale diretamente com nossa equipe de privacidade.</p>
+        <a href="mailto:privacidade@transcrevezap.com.br" class="dpo-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          privacidade@transcrevezap.com.br
+        </a>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>TranscreveZap · Segurança e Privacidade por Padrão · Em conformidade com a LGPD (Lei nº 13.709/2018)</p>
+    </footer>
+  </div>
+
+  <script>
+    // Theme Management synced with localStorage
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIconDark = document.getElementById('theme-icon-dark');
+    const themeIconLight = document.getElementById('theme-icon-light');
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('tz_theme', theme);
+      if (theme === 'dark') {
+        themeIconDark.style.display = 'none';
+        themeIconLight.style.display = 'block';
+      } else {
+        themeIconDark.style.display = 'block';
+        themeIconLight.style.display = 'none';
+      }
+    }
+
+    const savedTheme = localStorage.getItem('tz_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  </script>
+</body>
+</html>

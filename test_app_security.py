@@ -82,6 +82,61 @@ class SecurityAuditTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 400)
             self.assertIn("Formato não aceito", response.get_json().get("error", ""))
 
+    def test_privacy_policy_page_and_security_headers(self):
+        for path in ["/privacidade", "/politica-de-privacidade"]:
+            response = self.client.get(path)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.headers.get("X-Content-Type-Options"), "nosniff")
+            self.assertEqual(response.headers.get("X-Frame-Options"), "DENY")
+            self.assertIn("default-src 'self'", response.headers.get("Content-Security-Policy", ""))
+            html = response.get_data(as_text=True)
+            self.assertIn("Política de Privacidade", html)
+            self.assertIn("LGPD", html)
+            self.assertIn("privacidade@transcrevezap.com.br", html)
+
+    def test_browser_client_code_does_not_expose_api_keys(self):
+        secret_key = "AIzaSySuperSecretBackendKey987654321"
+        with patch.dict("os.environ", {"API_KEY": secret_key, "GEMINI_API_KEY": secret_key}):
+            with patch("app.get_api_key", return_value=secret_key):
+                # Verify HTML responses
+                for endpoint in ["/", "/privacidade"]:
+                    res = self.client.get(endpoint)
+                    self.assertEqual(res.status_code, 200)
+                    self.assertNotIn(secret_key, res.get_data(as_text=True))
+
+                # Verify files in templates and whatsapp-extension
+                files_to_check = [
+                    "templates/index.html",
+                    "templates/privacidade.html",
+                    "whatsapp-extension/content.js",
+                    "whatsapp-extension/service-worker.js",
+                    "whatsapp-extension/recorder.js",
+                    "whatsapp-extension/manifest.json",
+                ]
+                for file_path in files_to_check:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        content = f.read()
+                        self.assertNotIn(secret_key, content)
+                        # Check that no Google AI API key pattern is hardcoded
+                        self.assertNotRegex(content, r"AIza[0-9A-Za-z-_]{35}")
+
+    def test_api_error_does_not_leak_api_key_to_browser(self):
+        secret_key = "AIzaSySuperSecretBackendKey987654321"
+        with patch("app.get_api_key", return_value=secret_key):
+            with patch("app.genai.Client") as mock_client_cls:
+                mock_client = MagicMock()
+                mock_client_cls.return_value = mock_client
+                mock_client.models.generate_content.side_effect = Exception(
+                    f"401 Request failed with API key {secret_key}: invalid key"
+                )
+
+                data = {"audio": (io.BytesIO(b"fake audio data"), "sample.mp3")}
+                res = self.client.post("/api/transcrever", data=data, content_type="multipart/form-data")
+                self.assertEqual(res.status_code, 502)
+                response_json = res.get_json()
+                self.assertNotIn(secret_key, response_json.get("error", ""))
+                self.assertNotIn(secret_key, res.get_data(as_text=True))
+
 
 if __name__ == "__main__":
     unittest.main()
