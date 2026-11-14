@@ -9,17 +9,17 @@
   <link rel="alternate icon" href="/favicon.ico">
   <style>
     /* -------------------------------------------------------------
-       DESIGN TOKENS: ULTRA-FOCUSED, MINIMAL NOISE, OPERATE-MODE
+       DESIGN TOKENS & SYSTEM VARIABLES
        ------------------------------------------------------------- */
     :root {
       --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
       
-      --bg-page: #f0f2f5;
-      --bg-surface: #ffffff;
+      --bg-app: #f0f2f5;
+      --bg-panel: #ffffff;
       --bg-subtle: #f8fafc;
       --bg-muted: #e9edef;
-      --bg-hover: #f1f5f9;
+      --bg-hover: #eef2f5;
       
       --border-subtle: rgba(17, 27, 33, 0.08);
       --border-strong: rgba(17, 27, 33, 0.16);
@@ -31,21 +31,21 @@
       
       --accent-primary: #00a884;
       --accent-hover: #029070;
-      --accent-soft: rgba(0, 168, 132, 0.09);
+      --accent-soft: rgba(0, 168, 132, 0.1);
       --accent-gradient: linear-gradient(135deg, #00a884 0%, #128c7e 100%);
-      --accent-glow: 0 4px 14px rgba(0, 168, 132, 0.25);
+      --accent-glow: 0 4px 16px rgba(0, 168, 132, 0.28);
 
       --danger-primary: #ef4444;
       --danger-hover: #dc2626;
       --danger-soft: rgba(239, 68, 68, 0.1);
 
-      --shadow-sm: 0 1px 2px rgba(17, 27, 33, 0.04);
-      --shadow-md: 0 4px 14px -2px rgba(17, 27, 33, 0.06), 0 2px 6px -1px rgba(17, 27, 33, 0.03);
-      --shadow-lg: 0 12px 32px -4px rgba(17, 27, 33, 0.08);
+      --shadow-sm: 0 1px 3px rgba(17, 27, 33, 0.04);
+      --shadow-md: 0 4px 14px -2px rgba(17, 27, 33, 0.06);
+      --shadow-lg: 0 12px 30px -4px rgba(17, 27, 33, 0.1);
 
       --radius-sm: 6px;
       --radius-md: 10px;
-      --radius-lg: 16px;
+      --radius-lg: 14px;
       --radius-pill: 9999px;
 
       --ease-out-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -54,8 +54,8 @@
     }
 
     [data-theme="dark"] {
-      --bg-page: #0b141a;
-      --bg-surface: #111b21;
+      --bg-app: #0b141a;
+      --bg-panel: #111b21;
       --bg-subtle: #182229;
       --bg-muted: #202c33;
       --bg-hover: #26353d;
@@ -78,7 +78,7 @@
       --danger-hover: #ef4444;
       --danger-soft: rgba(248, 113, 113, 0.16);
 
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
       --shadow-md: 0 6px 18px -2px rgba(0, 0, 0, 0.45);
       --shadow-lg: 0 16px 40px -4px rgba(0, 0, 0, 0.6);
     }
@@ -91,7 +91,7 @@
 
     body {
       font-family: var(--font-sans);
-      background-color: var(--bg-page);
+      background-color: var(--bg-app);
       color: var(--text-main);
       min-height: 100vh;
       line-height: 1.5;
@@ -100,6 +100,7 @@
       transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
       padding-bottom: env(safe-area-inset-bottom);
     }
 
@@ -108,32 +109,27 @@
       font-feature-settings: "tnum";
     }
 
-    .app-container {
-      width: min(840px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 20px 0 48px;
-      flex: 1;
-    }
-
     :focus-visible {
       outline: 2px solid var(--border-focus);
       outline-offset: 2px;
     }
 
     /* -------------------------------------------------------------
-       HEADER: STREAMLINED & COMPACT (NO MARKETING FLUFF)
+       TOPBAR NAVIGATION
        ------------------------------------------------------------- */
-    header {
+    .topbar {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border-subtle);
+      gap: 16px;
+      z-index: 100;
     }
 
-    .brand-area {
-      display: flex;
+    .brand {
+      display: inline-flex;
       align-items: center;
       gap: 10px;
       text-decoration: none;
@@ -148,36 +144,31 @@
       display: grid;
       place-items: center;
       color: #ffffff;
-      flex-shrink: 0;
       box-shadow: 0 2px 8px rgba(0, 168, 132, 0.25);
     }
 
     .brand-title {
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
     }
 
     .brand-title span {
       color: var(--accent-primary);
     }
 
-    .brand-tagline {
-      font-size: 12px;
-      font-weight: 500;
+    .brand-badge {
+      font-size: 11px;
       color: var(--text-dim);
       border-left: 1px solid var(--border-strong);
-      padding-left: 8px;
+      padding-left: 10px;
       margin-left: 2px;
     }
 
-    .header-actions {
+    .topbar-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .btn-icon-subtle {
@@ -185,12 +176,11 @@
       height: 34px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-subtle);
-      background: var(--bg-surface);
+      background: var(--bg-panel);
       color: var(--text-muted);
       display: grid;
       place-items: center;
       cursor: pointer;
-      box-shadow: var(--shadow-sm);
       transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out-spring);
     }
 
@@ -204,25 +194,42 @@
     }
 
     /* -------------------------------------------------------------
-       CORE WORKSPACE SURFACE
+       TWO-PANE WORKSPACE (WHATSAPP / DESKTOP APP PARADIGM)
        ------------------------------------------------------------- */
-    .workspace-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 20px;
-      transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+    .workspace-wrapper {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 24px;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
+      align-items: start;
     }
 
-    /* Segmented Mode Switcher: Discreet & Low-Profile */
-    .mode-bar {
+    /* -------------------------------------------------------------
+       LEFT COLUMN: CONTROLS & INBOX (INPUT & HISTÓRICO)
+       ------------------------------------------------------------- */
+    .sidebar-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .control-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header-mini {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
-      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .segmented-control {
@@ -232,18 +239,21 @@
       border-radius: var(--radius-md);
       gap: 2px;
       border: 1px solid var(--border-subtle);
+      width: 100%;
     }
 
     .segment-btn {
+      flex: 1;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 6px 12px;
       background: transparent;
       border: none;
       border-radius: var(--radius-sm);
       font-family: inherit;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
@@ -255,43 +265,24 @@
     }
 
     .segment-btn.active {
-      background: var(--bg-surface);
+      background: var(--bg-panel);
       color: var(--accent-primary);
       box-shadow: var(--shadow-sm);
     }
 
-    .hint-chip {
-      font-size: 11.5px;
-      color: var(--text-dim);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .hint-chip kbd {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-strong);
-      padding: 1px 5px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-family: var(--font-mono);
-      font-weight: 600;
-    }
-
-    /* -------------------------------------------------------------
-       DROPZONE: COMPACT, FUNCTIONAL, ZERO SLOP
-       ------------------------------------------------------------- */
+    /* Dropzone Compact */
     .dropzone {
       border: 1.5px dashed var(--border-strong);
       border-radius: var(--radius-md);
-      padding: 22px 18px;
+      padding: 20px 14px;
       background: var(--bg-subtle);
       text-align: center;
       cursor: pointer;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 8px;
       transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out-spring);
     }
 
@@ -304,88 +295,71 @@
       border-color: var(--accent-primary);
       background: var(--accent-soft);
       border-style: solid;
-      transform: scale(1.006);
+      transform: scale(1.01);
     }
 
     .dropzone-icon {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: var(--bg-surface);
+      background: var(--bg-panel);
       display: grid;
       place-items: center;
       color: var(--accent-primary);
       border: 1px solid var(--border-subtle);
-      flex-shrink: 0;
     }
 
-    .dropzone-text-group {
-      text-align: left;
-    }
-
-    .dropzone-title {
-      font-size: 14px;
+    .dropzone-text {
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .dropzone-desc {
-      font-size: 12px;
+    .dropzone-sub {
+      font-size: 11.5px;
       color: var(--text-dim);
-      margin-top: 2px;
     }
 
-    .btn-select-inline {
-      margin-left: auto;
-      background: var(--bg-surface);
+    .btn-select-file {
+      margin-top: 4px;
+      background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
-      padding: 7px 14px;
+      padding: 5px 14px;
       border-radius: var(--radius-sm);
       font-family: inherit;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-main);
       cursor: pointer;
       box-shadow: var(--shadow-sm);
-      transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
-      white-space: nowrap;
+      transition: background-color var(--duration-fast) ease;
     }
 
-    .btn-select-inline:hover {
+    .btn-select-file:hover {
       background: var(--bg-hover);
       border-color: var(--border-focus);
     }
 
-    /* -------------------------------------------------------------
-       RECORD ZONE: CLEAN & TACTILE
-       ------------------------------------------------------------- */
+    /* Record Zone Compact */
     .record-zone {
       display: none;
       border: 1.5px dashed var(--border-strong);
       border-radius: var(--radius-md);
-      padding: 20px 18px;
+      padding: 18px 14px;
       background: var(--bg-subtle);
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
+      text-align: center;
     }
 
     .record-zone.visible {
       display: flex;
     }
 
-    .record-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
     .pulse-dot {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--text-dim);
     }
@@ -401,17 +375,16 @@
     }
 
     .record-timer {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.02em;
-      color: var(--text-main);
     }
 
     .btn-record-action {
-      padding: 8px 18px;
+      padding: 7px 18px;
       border-radius: var(--radius-sm);
       font-family: inherit;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       border: none;
@@ -430,45 +403,39 @@
       color: #ffffff;
     }
 
-    .btn-record-start:hover {
-      background: var(--danger-hover);
-    }
-
     .btn-record-stop {
-      background: var(--bg-surface);
+      background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
     }
 
-    /* -------------------------------------------------------------
-       LOADED AUDIO & CUSTOM PLAYER
-       ------------------------------------------------------------- */
+    /* Loaded Audio Panel */
     .audio-loaded-panel {
       display: none;
       margin-top: 14px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       background: var(--bg-subtle);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      animation: fadeIn var(--duration-fast) ease;
     }
 
     .audio-loaded-panel.visible {
       display: block;
-    }
-
-    .audio-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
+      animation: fadeIn var(--duration-fast) ease;
     }
 
     .audio-file-meta {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .audio-file-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       min-width: 0;
     }
 
@@ -478,37 +445,28 @@
       text-transform: uppercase;
       background: var(--accent-primary);
       color: #ffffff;
-      padding: 2px 6px;
-      border-radius: var(--radius-sm);
+      padding: 2px 5px;
+      border-radius: 4px;
       flex-shrink: 0;
     }
 
     .filename-label {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: var(--text-main);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .filesize-label {
-      font-size: 11.5px;
-      color: var(--text-dim);
-      flex-shrink: 0;
-    }
-
     .btn-clear-audio {
-      width: 28px;
-      height: 28px;
-      border-radius: var(--radius-sm);
-      border: none;
       background: transparent;
+      border: none;
       color: var(--text-dim);
       cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
       display: grid;
       place-items: center;
-      transition: color var(--duration-fast) ease, background-color var(--duration-fast) ease;
     }
 
     .btn-clear-audio:hover {
@@ -516,21 +474,21 @@
       color: var(--danger-primary);
     }
 
-    /* WhatsApp Custom Audio Player */
+    /* Custom WhatsApp Audio Player */
     .custom-player-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: var(--bg-surface);
-      padding: 8px 12px;
+      gap: 10px;
+      background: var(--bg-panel);
+      padding: 8px 10px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-subtle);
     }
 
     .player-play-btn {
-      width: 36px;
-      height: 36px;
-      min-width: 36px;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
       border-radius: 50%;
       background: var(--accent-primary);
       border: none;
@@ -538,18 +496,13 @@
       display: grid;
       place-items: center;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 168, 132, 0.3);
-      transition: transform var(--duration-fast) var(--ease-out-spring);
       flex-shrink: 0;
-    }
-
-    .player-play-btn:hover {
-      background: var(--accent-hover);
-      transform: scale(1.04);
+      box-shadow: 0 2px 6px rgba(0, 168, 132, 0.3);
+      transition: transform var(--duration-fast) var(--ease-out-spring);
     }
 
     .player-play-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
     }
 
     .player-track {
@@ -562,7 +515,7 @@
 
     .player-bar-container {
       position: relative;
-      height: 18px;
+      height: 16px;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -588,19 +541,18 @@
     .player-thumb {
       position: absolute;
       left: 0%;
-      width: 12px;
-      height: 12px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
       background: var(--accent-primary);
       transform: translateX(-50%);
       pointer-events: none;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
     .player-time-display {
       display: flex;
       justify-content: space-between;
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-dim);
     }
 
@@ -610,31 +562,23 @@
       color: var(--text-muted);
       background: var(--bg-subtle);
       border: 1px solid var(--border-subtle);
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: var(--radius-pill);
       cursor: pointer;
       flex-shrink: 0;
-      transition: background-color var(--duration-fast) ease;
     }
 
-    .player-speed-toggle:hover {
-      background: var(--bg-hover);
-      color: var(--text-main);
-    }
-
-    /* -------------------------------------------------------------
-       PRIMARY ACTION BUTTON & LOADING WAVE
-       ------------------------------------------------------------- */
+    /* Submit Button */
     .btn-transcribe {
       width: 100%;
       margin-top: 14px;
-      padding: 12px 20px;
+      padding: 11px 18px;
       background: var(--accent-gradient);
       color: #ffffff;
       border: none;
       border-radius: var(--radius-md);
       font-family: inherit;
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -660,19 +604,18 @@
       box-shadow: none;
     }
 
-    .btn-transcribe .kbd-shortcut {
+    .btn-transcribe .kbd-hint {
       font-size: 10px;
       background: rgba(255, 255, 255, 0.2);
       padding: 1px 5px;
-      border-radius: 4px;
-      font-weight: 600;
+      border-radius: 3px;
     }
 
     /* Loading Pulse */
     .loading-pulse-card {
       display: none;
       margin-top: 14px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       background: var(--accent-soft);
       border: 1px solid rgba(0, 168, 132, 0.25);
       border-radius: var(--radius-md);
@@ -689,11 +632,11 @@
       display: flex;
       align-items: center;
       gap: 3px;
-      height: 20px;
+      height: 18px;
     }
 
     .wave-line {
-      width: 3.5px;
+      width: 3px;
       height: 100%;
       background: var(--accent-primary);
       border-radius: 2px;
@@ -709,125 +652,28 @@
       50% { transform: scaleY(1); }
     }
 
-    .loading-meta-text {
-      font-size: 13px;
-      font-weight: 600;
+    .loading-title {
+      font-size: 12.5px;
+      font-weight: 700;
       color: var(--text-main);
     }
 
-    .loading-sub-text {
-      font-size: 11.5px;
+    .loading-sub {
+      font-size: 11px;
       color: var(--text-muted);
     }
 
-    /* -------------------------------------------------------------
-       THE REAL HERO: TRANSCRIPTION OUTPUT CARD
-       ------------------------------------------------------------- */
-    .transcription-hero-card {
-      display: none;
-      background: var(--bg-surface);
-      border: 1.5px solid var(--accent-primary);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
-      overflow: hidden;
-      margin-bottom: 20px;
-      animation: slideUp var(--duration-base) var(--ease-out-spring);
-    }
-
-    .transcription-hero-card.visible {
-      display: block;
-    }
-
-    .transcription-toolbar {
-      background: var(--bg-subtle);
-      padding: 10px 18px;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .toolbar-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .status-badge {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-primary);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .reading-stats {
-      font-size: 11.5px;
-      color: var(--text-dim);
-    }
-
-    .toolbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-action {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-main);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: var(--shadow-sm);
-      transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out-spring);
-    }
-
-    .btn-action:hover {
-      background: var(--bg-hover);
-      border-color: var(--border-focus);
-    }
-
-    .btn-action:active {
-      transform: scale(0.96);
-    }
-
-    .btn-action.copied {
-      background: var(--accent-soft);
-      color: var(--accent-primary);
-      border-color: var(--accent-primary);
-    }
-
-    .transcription-content-area {
-      padding: 24px;
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--text-main);
-      white-space: pre-wrap;
-      word-break: break-word;
-      user-select: text;
-      max-height: 520px;
-      overflow-y: auto;
-    }
-
-    /* -------------------------------------------------------------
-       LOCAL HISTORY: DENSE, ESCANEABLE & SEARCHABLE
-       ------------------------------------------------------------- */
-    .history-section {
-      background: var(--bg-surface);
+    /* History Sidebar Container */
+    .history-card {
+      background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 16px 20px;
+      padding: 16px;
       box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 380px);
+      min-height: 280px;
     }
 
     .history-header {
@@ -835,134 +681,295 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 12px;
-      gap: 10px;
     }
 
-    .history-title-row {
+    .history-title-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .history-title-row h2 {
-      font-size: 14.5px;
+    .history-title {
+      font-size: 13.5px;
       font-weight: 700;
-      color: var(--text-main);
     }
 
-    .history-count-badge {
+    .history-badge {
       font-size: 11px;
       font-weight: 700;
       background: var(--bg-subtle);
       color: var(--text-muted);
-      padding: 1px 7px;
+      padding: 1px 6px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-subtle);
     }
 
-    .history-privacy-tag {
-      font-size: 11px;
-      color: var(--text-dim);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-left: 4px;
+    .btn-text-danger {
+      background: transparent;
+      border: none;
+      color: var(--danger-primary);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
     }
 
-    .history-search-bar {
-      position: relative;
-      margin-bottom: 12px;
-    }
-
-    .history-search-bar input {
+    .history-search-input {
       width: 100%;
       background: var(--bg-subtle);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 8px 12px 8px 34px;
+      padding: 7px 10px 7px 30px;
       font-family: inherit;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-main);
       outline: none;
-      transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease;
+      margin-bottom: 10px;
     }
 
-    .history-search-bar input:focus {
+    .history-search-input:focus {
       border-color: var(--border-focus);
-      background: var(--bg-surface);
+      background: var(--bg-panel);
     }
 
-    .search-icon-svg {
+    .search-box-rel {
+      position: relative;
+    }
+
+    .search-box-rel svg {
       position: absolute;
-      left: 11px;
+      left: 9px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-dim);
       pointer-events: none;
     }
 
-    .history-item-row {
+    .history-items-scroll {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 4px;
+    }
+
+    .history-row {
       background: var(--bg-subtle);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      transition: border-color var(--duration-fast) ease;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+      text-align: left;
     }
 
-    .history-item-row:hover {
+    .history-row:hover {
+      background: var(--bg-hover);
       border-color: rgba(0, 168, 132, 0.35);
     }
 
-    .history-row-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-      gap: 8px;
+    .history-row.active {
+      border-color: var(--accent-primary);
+      background: var(--accent-soft);
     }
 
-    .history-row-filename {
-      font-size: 13px;
+    .history-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .history-row-name {
+      font-size: 12px;
       font-weight: 700;
-      color: var(--text-main);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      max-width: 180px;
     }
 
     .history-row-date {
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-dim);
     }
 
     .history-row-snippet {
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 11.5px;
       color: var(--text-muted);
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       line-clamp: 2;
       -webkit-box-orient: vertical;
-    }
-
-    .history-row-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 8px;
+      line-height: 1.4;
     }
 
     .empty-history-text {
-      text-align: center;
-      padding: 24px 12px;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-dim);
+      text-align: center;
+      margin: auto 0;
+      padding: 24px 0;
     }
 
     /* -------------------------------------------------------------
-       TOAST HUB & PRIVACY BANNER
+       RIGHT COLUMN: THE MAIN STAGE (CANVAS DE LEITURA E TRANSCRIÇÃO)
+       ------------------------------------------------------------- */
+    .stage-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 120px);
+      position: sticky;
+      top: 20px;
+    }
+
+    .stage-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .stage-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .stage-title {
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stage-stats {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .stage-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action-primary {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 168, 132, 0.25);
+      transition: background-color var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out-spring);
+    }
+
+    .btn-action-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-action-primary:active {
+      transform: scale(0.96);
+    }
+
+    .btn-action-primary.copied {
+      background: #075e54;
+    }
+
+    .btn-action-secondary {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color var(--duration-fast) ease;
+    }
+
+    .btn-action-secondary:hover {
+      background: var(--bg-hover);
+    }
+
+    /* Transcription Body */
+    .stage-content-area {
+      flex: 1;
+      padding: 32px 36px;
+      overflow-y: auto;
+      max-height: calc(100vh - 220px);
+    }
+
+    .transcription-text-render {
+      font-size: 16.5px;
+      line-height: 1.85;
+      color: var(--text-main);
+      white-space: pre-wrap;
+      word-break: break-word;
+      user-select: text;
+    }
+
+    /* Purposeful Empty State for Stage */
+    .stage-empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-dim);
+    }
+
+    .stage-empty-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      place-items: center;
+      color: var(--accent-primary);
+      margin-bottom: 16px;
+      opacity: 0.85;
+    }
+
+    .stage-empty-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .stage-empty-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      max-width: 420px;
+      line-height: 1.55;
+    }
+
+    /* -------------------------------------------------------------
+       TOASTS & PRIVACY
        ------------------------------------------------------------- */
     .toast-container {
       position: fixed;
@@ -977,7 +984,7 @@
 
     .toast {
       pointer-events: auto;
-      background: var(--bg-surface);
+      background: var(--bg-panel);
       color: var(--text-main);
       border: 1px solid var(--border-subtle);
       padding: 10px 16px;
@@ -1013,7 +1020,7 @@
     }
 
     .privacy-banner-card {
-      background: var(--bg-surface);
+      background: var(--bg-panel);
       border: 1px solid var(--accent-primary);
       border-radius: var(--radius-md);
       padding: 16px 20px;
@@ -1026,7 +1033,6 @@
     .privacy-banner-header {
       font-size: 14px;
       font-weight: 700;
-      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -1056,233 +1062,234 @@
       cursor: pointer;
     }
 
-    footer {
-      margin-top: 24px;
-      text-align: center;
-      font-size: 11.5px;
-      color: var(--text-dim);
-    }
-
-    footer a {
-      color: var(--text-muted);
-      text-decoration: underline;
-    }
-
-    /* Animations */
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes toastIn { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-    @media (max-width: 600px) {
-      .app-container { width: calc(100% - 20px); padding-top: 14px; }
-      .dropzone { flex-direction: column; text-align: center; }
-      .dropzone-text-group { text-align: center; }
-      .btn-select-inline { margin: 8px auto 0; }
-      .history-search-bar input { font-size: 16px; }
+    /* -------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS (COLLAPSE ON MOBILE)
+       ------------------------------------------------------------- */
+    @media (max-width: 900px) {
+      .workspace-wrapper {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+      .stage-panel {
+        position: static;
+        min-height: 480px;
+      }
+      .stage-content-area {
+        padding: 20px;
+      }
+      .history-card {
+        max-height: 340px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Streamlined Header (Discreet Branding, Zero Marketing Noise) -->
-    <header>
-      <a href="/" class="brand-area" title="TranscreveZap">
-        <div class="brand-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-            <line x1="12" x2="12" y1="19" y2="22"/>
-          </svg>
-        </div>
-        <div class="brand-title">
-          Transcreve<span>Zap</span>
-        </div>
-        <span class="brand-tagline">Áudio para texto com IA</span>
-      </a>
-
-      <div class="header-actions">
-        <button class="btn-icon-subtle" id="theme-toggle" type="button" aria-label="Alternar tema" title="Alternar tema (T)">
-          <svg id="theme-icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-          </svg>
-          <svg id="theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-          </svg>
-        </button>
+  <!-- Topbar -->
+  <header class="topbar">
+    <a href="/" class="brand">
+      <div class="brand-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" x2="12" y1="19" y2="22"/>
+        </svg>
       </div>
-    </header>
+      <div class="brand-title">
+        Transcreve<span>Zap</span>
+      </div>
+      <span class="brand-badge">Workspace de Transcrição</span>
+    </a>
 
-    <!-- THE HERO: TRANSCRIPTION OUTPUT (SHOWN FIRST WHEN READY) -->
-    <section class="transcription-hero-card" id="result-section" aria-label="Texto Transcrito">
-      <div class="transcription-toolbar">
-        <div class="toolbar-left">
-          <span class="status-badge">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Texto Transcrito
-          </span>
-          <span class="reading-stats tabular-num" id="result-stats">0 palavras · ~0s de leitura</span>
+    <div class="topbar-actions">
+      <button class="btn-icon-subtle" id="theme-toggle" type="button" aria-label="Alternar tema" title="Alternar tema (T)">
+        <svg id="theme-icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>
+        <svg id="theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Split Studio Workspace -->
+  <div class="workspace-wrapper">
+    <!-- LEFT PANEL: INPUT & HISTORY -->
+    <aside class="sidebar-panel">
+      <!-- Input Card -->
+      <section class="control-card">
+        <div class="card-header-mini">
+          <div class="segmented-control" role="tablist">
+            <button class="segment-btn active" id="tab-upload" role="tab" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+              Arquivo
+            </button>
+            <button class="segment-btn" id="tab-record" role="tab" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+              Gravar
+            </button>
+          </div>
         </div>
-        
-        <div class="toolbar-actions">
-          <button class="btn-action" id="btn-copy-result" type="button" title="Copiar texto">
-            <svg id="copy-icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            <span id="btn-copy-label">Copiar</span>
+
+        <!-- Dropzone -->
+        <div class="dropzone" id="dropzone" role="button" tabindex="0">
+          <div class="dropzone-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+          </div>
+          <div class="dropzone-text">Arraste um áudio aqui</div>
+          <div class="dropzone-sub">WhatsApp (.opus, .ogg), MP3, M4A · até 100 MB</div>
+          <button class="btn-select-file" type="button" id="choose-file-btn">Selecionar arquivo</button>
+          <input type="file" id="file-input" style="display: none;" accept="audio/*,.opus,.ogg,.m4a,.mp3,.wav,.webm,.aac,.flac">
+        </div>
+
+        <!-- Record Zone -->
+        <div class="record-zone" id="record-zone">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="pulse-dot"></span>
+            <span class="record-timer tabular-num" id="record-timer">00:00</span>
+          </div>
+          <div style="font-size:11.5px; color:var(--text-dim);" id="record-status-label">Pronto para gravar</div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-record-action btn-record-start" id="btn-start-record" type="button">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+              Gravar
+            </button>
+            <button class="btn-record-action btn-record-stop" id="btn-stop-record" type="button" style="display: none;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+              Finalizar
+            </button>
+          </div>
+        </div>
+
+        <!-- Audio Player Loaded -->
+        <div class="audio-loaded-panel" id="audio-preview-card">
+          <div class="audio-file-meta">
+            <div class="audio-file-info">
+              <span class="format-pill" id="preview-ext">OPUS</span>
+              <span class="filename-label" id="preview-name">audio.opus</span>
+            </div>
+            <button class="btn-clear-audio" id="btn-remove-audio" type="button" title="Remover">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <div class="custom-player-row">
+            <button class="player-play-btn" id="player-play-btn" type="button" title="Play/Pause (Espaço)">
+              <svg id="icon-play" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              <svg id="icon-pause" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </button>
+
+            <div class="player-track">
+              <div class="player-bar-container" id="player-progress-container">
+                <div class="player-bar-bg">
+                  <div class="player-bar-fill" id="player-progress-fill"></div>
+                </div>
+                <div class="player-thumb" id="player-scrubber-thumb"></div>
+              </div>
+              <div class="player-time-display tabular-num">
+                <span id="player-current-time">00:00</span>
+                <span id="player-total-time">00:00</span>
+              </div>
+            </div>
+
+            <button class="player-speed-toggle tabular-num" id="player-speed-btn" type="button">1x</button>
+          </div>
+          <audio id="native-audio" preload="metadata" style="display:none;"></audio>
+        </div>
+
+        <!-- Transcribe Button -->
+        <button class="btn-transcribe" id="btn-transcribe" type="button" disabled>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+          <span>Transcrever com IA</span>
+          <span class="kbd-hint">Ctrl+Enter</span>
+        </button>
+
+        <!-- Loading Feedback -->
+        <div class="loading-pulse-card" id="loading-card" role="status" aria-live="polite">
+          <div class="loading-waves">
+            <div class="wave-line"></div>
+            <div class="wave-line"></div>
+            <div class="wave-line"></div>
+            <div class="wave-line"></div>
+          </div>
+          <div>
+            <div class="loading-title" id="loading-title">Transcrevendo áudio...</div>
+            <div class="loading-sub tabular-num" id="loading-subtitle">Tempo: 0s</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- History List Card -->
+      <section class="history-card" aria-label="Histórico de Transcrições">
+        <div class="history-header">
+          <div class="history-title-group">
+            <span class="history-title">Histórico</span>
+            <span class="history-badge tabular-num" id="history-count">0</span>
+          </div>
+          <button class="btn-text-danger" id="btn-clear-history" type="button" style="display:none;">
+            Limpar
           </button>
-          <button class="btn-action" id="btn-download-result" type="button" title="Baixar TXT">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        </div>
+
+        <div class="search-box-rel" id="history-search-container" style="display:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="history-search-input" type="text" id="history-search-input" placeholder="Buscar no histórico...">
+        </div>
+
+        <div class="history-items-scroll" id="history-list">
+          <div class="empty-history-text" id="history-empty">
+            Suas transcrições salvas localmente aparecerão aqui.
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- RIGHT PANEL: THE MAIN STAGE (CANVAS DA TRANSCRIÇÃO) -->
+    <main class="stage-panel" id="stage-panel">
+      <!-- Stage Header Toolbar -->
+      <div class="stage-header">
+        <div class="stage-title-group">
+          <div class="stage-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00a884" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="stage-file-title">Transcrição do Áudio</span>
+          </div>
+          <span class="stage-stats tabular-num" id="stage-stats">Aguardando áudio...</span>
+        </div>
+
+        <div class="stage-actions">
+          <button class="btn-action-primary" id="btn-copy-result" type="button" title="Copiar texto">
+            <svg id="copy-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span id="btn-copy-label">Copiar Texto</span>
+          </button>
+          <button class="btn-action-secondary" id="btn-download-result" type="button" title="Baixar arquivo TXT">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
             Baixar .txt
           </button>
-          <button class="btn-action" id="btn-new-transcription" type="button" title="Transcrever outro áudio">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Novo
-          </button>
-        </div>
-      </div>
-      <div class="transcription-content-area" id="transcription-text"></div>
-    </section>
-
-    <!-- CORE WORKSPACE CARD (COMPACT INPUT) -->
-    <main class="workspace-card" id="workspace-input-card">
-      <div class="mode-bar">
-        <div class="segmented-control" role="tablist">
-          <button class="segment-btn active" id="tab-upload" role="tab" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-            Arquivo
-          </button>
-          <button class="segment-btn" id="tab-record" role="tab" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-            Gravar
-          </button>
-        </div>
-        <span class="hint-chip">Cole com <kbd>Ctrl+V</kbd></span>
-      </div>
-
-      <!-- File Dropzone -->
-      <div class="dropzone" id="dropzone" role="button" tabindex="0">
-        <div class="dropzone-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-        </div>
-        <div class="dropzone-text-group">
-          <div class="dropzone-title">Arraste seu áudio aqui</div>
-          <div class="dropzone-desc">WhatsApp (.opus, .ogg), MP3, M4A, WAV · até 100 MB</div>
-        </div>
-        <button class="btn-select-inline" type="button" id="choose-file-btn">Selecionar</button>
-        <input type="file" id="file-input" style="display: none;" accept="audio/*,.opus,.ogg,.m4a,.mp3,.wav,.webm,.aac,.flac">
-      </div>
-
-      <!-- Microphone Record Zone -->
-      <div class="record-zone" id="record-zone">
-        <div class="record-left">
-          <span class="pulse-dot"></span>
-          <span class="record-timer tabular-num" id="record-timer">00:00</span>
-          <span style="font-size:12px; color:var(--text-dim);" id="record-status-label">Pronto para gravar</span>
-        </div>
-        <div class="record-actions">
-          <button class="btn-record-action btn-record-start" id="btn-start-record" type="button">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
-            Gravar
-          </button>
-          <button class="btn-record-action btn-record-stop" id="btn-stop-record" type="button" style="display: none;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
-            Finalizar
-          </button>
         </div>
       </div>
 
-      <!-- Audio Preview & Custom Player -->
-      <div class="audio-loaded-panel" id="audio-preview-card">
-        <div class="audio-header-row">
-          <div class="audio-file-meta">
-            <span class="format-pill" id="preview-ext">OPUS</span>
-            <span class="filename-label" id="preview-name">audio.opus</span>
-            <span class="filesize-label tabular-num" id="preview-size">0 KB</span>
-          </div>
-          <button class="btn-clear-audio" id="btn-remove-audio" type="button" title="Remover">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
+      <!-- Stage Empty State (Before Transcription) -->
+      <div class="stage-empty-state" id="stage-empty-state">
+        <div class="stage-empty-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
         </div>
-
-        <div class="custom-player-row">
-          <button class="player-play-btn" id="player-play-btn" type="button" title="Play/Pause (Espaço)">
-            <svg id="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-            <svg id="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-          </button>
-
-          <div class="player-track">
-            <div class="player-bar-container" id="player-progress-container">
-              <div class="player-bar-bg">
-                <div class="player-bar-fill" id="player-progress-fill"></div>
-              </div>
-              <div class="player-thumb" id="player-scrubber-thumb"></div>
-            </div>
-            <div class="player-time-display tabular-num">
-              <span id="player-current-time">00:00</span>
-              <span id="player-total-time">00:00</span>
-            </div>
-          </div>
-
-          <button class="player-speed-toggle tabular-num" id="player-speed-btn" type="button">1x</button>
+        <div class="stage-empty-title">O texto transcrito aparecerá aqui</div>
+        <div class="stage-empty-desc">
+          Carregue um áudio no painel à esquerda ou selecione uma transcrição do histórico para leitura, cópia e exportação imediata.
         </div>
-        <audio id="native-audio" preload="metadata" style="display:none;"></audio>
       </div>
 
-      <!-- Action Button -->
-      <button class="btn-transcribe" id="btn-transcribe" type="button" disabled>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
-        <span>Transcrever com IA</span>
-        <span class="kbd-shortcut">Ctrl+Enter</span>
-      </button>
-
-      <!-- Loading State -->
-      <div class="loading-pulse-card" id="loading-card" role="status" aria-live="polite">
-        <div class="loading-waves">
-          <div class="wave-line"></div>
-          <div class="wave-line"></div>
-          <div class="wave-line"></div>
-          <div class="wave-line"></div>
-        </div>
-        <div>
-          <div class="loading-meta-text" id="loading-title">Transcrevendo áudio...</div>
-          <div class="loading-sub-text tabular-num" id="loading-subtitle">Tempo decorrido: 0s</div>
-        </div>
+      <!-- Stage Content Area (When Transcription Exists) -->
+      <div class="stage-content-area" id="stage-content-area" style="display:none;">
+        <div class="transcription-text-render" id="transcription-text"></div>
       </div>
     </main>
-
-    <!-- LOCAL HISTORY (DENSE & CLEAN) -->
-    <section class="history-section" aria-label="Histórico de Transcrições">
-      <div class="history-header">
-        <div class="history-title-row">
-          <h2>Histórico</h2>
-          <span class="history-count-badge tabular-num" id="history-count">0</span>
-          <span class="history-privacy-tag">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            No navegador
-          </span>
-        </div>
-        <button class="btn-action" id="btn-clear-history" type="button" style="display:none; color:var(--danger-primary); padding:4px 8px; font-size:11px;">
-          Limpar
-        </button>
-      </div>
-
-      <div class="history-search-bar" id="history-search-container" style="display:none;">
-        <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="history-search-input" placeholder="Filtrar histórico por nome ou texto...">
-      </div>
-
-      <div class="empty-history-text" id="history-empty">
-        Suas transcrições salvas localmente aparecerão aqui.
-      </div>
-
-      <div id="history-list"></div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <p>TranscreveZap · Zero retenção de áudios no servidor · <a href="/privacidade" target="_blank" rel="noopener">Privacidade & LGPD</a></p>
-    </footer>
   </div>
 
-  <!-- Privacy Banner -->
+  <!-- LGPD Consent Banner -->
   <div class="privacy-banner-container" id="privacy-banner" role="region">
     <div class="privacy-banner-card">
       <div class="privacy-banner-header">
@@ -1290,7 +1297,7 @@
         Privacidade & Retenção Zero
       </div>
       <p class="privacy-banner-text">
-        Seus áudios são processados de forma volátil na memória e descartados. As transcrições residem exclusivamente no seu próprio navegador.
+        Seus áudios são processados de forma volátil na memória e descartados. As transcrições residem exclusivamente no armazenamento do seu navegador.
       </p>
       <div class="privacy-banner-actions">
         <a href="/privacidade" target="_blank" rel="noopener" style="font-size:12px; color:var(--text-muted); text-decoration:none;">Ler Política</a>
@@ -1301,8 +1308,9 @@
 
   <div class="toast-container" id="toast-container" aria-live="polite"></div>
 
+  <!-- Application Logic -->
   <script>
-    // Theme Management
+    // Theme Switcher
     const themeToggle = document.getElementById('theme-toggle');
     const themeIconDark = document.getElementById('theme-icon-dark');
     const themeIconLight = document.getElementById('theme-icon-light');
@@ -1334,14 +1342,14 @@
       }
     });
 
-    // Toast
+    // Toast Utility
     const toastContainer = document.getElementById('toast-container');
     function showToast(message, type = 'success') {
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
       const icon = type === 'success' 
-        ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00a884" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
-        : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+        ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00a884" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+        : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
       toast.innerHTML = `${icon}<span>${message}</span>`;
       toastContainer.appendChild(toast);
       setTimeout(() => {
@@ -1367,7 +1375,7 @@
       setTimeout(() => privacyBanner.classList.add('visible'), 300);
     }
 
-    // Tab Switcher
+    // Input Tabs
     const tabUpload = document.getElementById('tab-upload');
     const tabRecord = document.getElementById('tab-record');
     const dropzone = document.getElementById('dropzone');
@@ -1387,27 +1395,34 @@
       recordZone.classList.add('visible');
     });
 
-    // State & Audio Engine
+    // App State
     let currentAudioFile = null;
     let currentAudioBlobUrl = null;
     let loadingInterval = null;
     let historyEntries = [];
+    let activeTranscriptionId = null;
 
     const fileInput = document.getElementById('file-input');
     const chooseBtn = document.getElementById('choose-file-btn');
     const audioPreviewCard = document.getElementById('audio-preview-card');
     const previewExt = document.getElementById('preview-ext');
     const previewName = document.getElementById('preview-name');
-    const previewSize = document.getElementById('preview-size');
     const btnRemoveAudio = document.getElementById('btn-remove-audio');
     const btnTranscribe = document.getElementById('btn-transcribe');
-    const resultSection = document.getElementById('result-section');
-    const transcriptionText = document.getElementById('transcription-text');
-    const resultStats = document.getElementById('result-stats');
     const loadingCard = document.getElementById('loading-card');
     const loadingTitle = document.getElementById('loading-title');
     const loadingSubtitle = document.getElementById('loading-subtitle');
-    const btnNewTranscription = document.getElementById('btn-new-transcription');
+
+    // Stage Elements
+    const stageFileTitle = document.getElementById('stage-file-title');
+    const stageStats = document.getElementById('stage-stats');
+    const stageEmptyState = document.getElementById('stage-empty-state');
+    const stageContentArea = document.getElementById('stage-content-area');
+    const transcriptionText = document.getElementById('transcription-text');
+    const btnCopyResult = document.getElementById('btn-copy-result');
+    const btnCopyLabel = document.getElementById('btn-copy-label');
+    const copyIconSvg = document.getElementById('copy-icon-svg');
+    const btnDownloadResult = document.getElementById('btn-download-result');
 
     function formatBytes(bytes) {
       if (!bytes || bytes === 0) return '0 B';
@@ -1424,7 +1439,7 @@
       return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
-    // Custom WhatsApp-style Player
+    // Audio Player Engine
     const nativeAudio = document.getElementById('native-audio');
     const playerPlayBtn = document.getElementById('player-play-btn');
     const iconPlay = document.getElementById('icon-play');
@@ -1504,7 +1519,7 @@
       }
     });
 
-    // File Management
+    // File Handling
     function setAudioFile(file) {
       if (!file) return;
 
@@ -1525,7 +1540,6 @@
       const ext = nameParts.length > 1 ? nameParts.pop().toUpperCase() : 'ÁUDIO';
       previewExt.textContent = ext;
       previewName.textContent = file.name;
-      previewSize.textContent = formatBytes(file.size);
 
       if (currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
       currentAudioBlobUrl = URL.createObjectURL(file);
@@ -1596,7 +1610,7 @@
       }
     });
 
-    // Recording Engine
+    // Recording Logic
     let mediaRecorder = null;
     let recordedChunks = [];
     let recordStartTime = 0;
@@ -1661,7 +1675,7 @@
       }
     });
 
-    // Transcription Execution
+    // Transcription Engine
     async function executeTranscription() {
       if (!currentAudioFile || btnTranscribe.disabled) return;
 
@@ -1678,12 +1692,12 @@
       loadingCard.classList.add('visible');
 
       let secondsElapsed = 0;
-      loadingSubtitle.textContent = `Tempo decorrido: ${secondsElapsed}s`;
+      loadingSubtitle.textContent = `Tempo: ${secondsElapsed}s`;
       loadingInterval = setInterval(() => {
         secondsElapsed++;
-        loadingSubtitle.textContent = `Tempo decorrido: ${secondsElapsed}s`;
+        loadingSubtitle.textContent = `Tempo: ${secondsElapsed}s`;
         if (secondsElapsed > 8) {
-          loadingTitle.textContent = 'Processando contexto com IA...';
+          loadingTitle.textContent = 'Processando com IA...';
         }
       }, 1000);
 
@@ -1710,16 +1724,17 @@
         clearInterval(loadingInterval);
         loadingCard.classList.remove('visible');
 
-        displayTranscription(data.text, data.duration);
-        showToast('Transcrição concluída!');
-        
-        addHistoryEntry({
+        const entry = {
           id: data.id || 'tx_' + Date.now(),
           filename: data.filename || currentAudioFile?.name || 'audio',
           text: data.text,
           created_at: data.created_at || new Date().toISOString(),
           duration: data.duration
-        });
+        };
+
+        displayTranscriptionInStage(entry);
+        showToast('Transcrição concluída!');
+        addHistoryEntry(entry);
       } catch (err) {
         clearInterval(loadingInterval);
         loadingCard.classList.remove('visible');
@@ -1737,34 +1752,32 @@
       }
     });
 
-    function displayTranscription(text, duration) {
-      transcriptionText.textContent = text;
+    // Display in the Main Stage Canvas
+    function displayTranscriptionInStage(entry) {
+      if (!entry || !entry.text) return;
+      activeTranscriptionId = entry.id;
 
-      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-      const chars = text.length;
+      stageFileTitle.textContent = entry.filename || 'Transcrição';
+      transcriptionText.textContent = entry.text;
+
+      const words = entry.text.trim() ? entry.text.trim().split(/\s+/).length : 0;
+      const chars = entry.text.length;
       const readSeconds = Math.max(1, Math.round(words / 3));
       const readTimeText = readSeconds < 60 ? `~${readSeconds}s` : `~${Math.round(readSeconds / 60)} min`;
-      const timeBadge = typeof duration === 'number' ? ` · ⚡ ${duration}s` : '';
+      const timeBadge = typeof entry.duration === 'number' ? ` · ⚡ ${entry.duration}s` : '';
 
-      resultStats.textContent = `${words} palavras · ${chars} caracteres · ${readTimeText} de leitura${timeBadge}`;
-      
-      // Reveal the Hero Transcription Card directly at the top!
-      resultSection.classList.add('visible');
-      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      stageStats.textContent = `${words} palavras · ${chars} caracteres · ${readTimeText} de leitura${timeBadge}`;
+
+      stageEmptyState.style.display = 'none';
+      stageContentArea.style.display = 'block';
+
+      // Update active state in sidebar rows
+      document.querySelectorAll('.history-row').forEach(row => {
+        row.classList.toggle('active', row.getAttribute('data-id') === entry.id);
+      });
     }
 
-    // New Transcription Button
-    btnNewTranscription.addEventListener('click', () => {
-      clearAudioFile();
-      document.getElementById('workspace-input-card').scrollIntoView({ behavior: 'smooth' });
-    });
-
-    // Copy & Download Handlers
-    const btnCopyResult = document.getElementById('btn-copy-result');
-    const btnCopyLabel = document.getElementById('btn-copy-label');
-    const copyIconSvg = document.getElementById('copy-icon-svg');
-    const btnDownloadResult = document.getElementById('btn-download-result');
-
+    // Copy & Download
     btnCopyResult.addEventListener('click', async () => {
       const text = transcriptionText.textContent;
       if (!text) return;
@@ -1774,10 +1787,10 @@
         btnCopyLabel.textContent = 'Copiado!';
         btnCopyResult.classList.add('copied');
         copyIconSvg.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
-        showToast('Texto copiado!');
+        showToast('Texto copiado com sucesso!');
 
         setTimeout(() => {
-          btnCopyLabel.textContent = 'Copiar';
+          btnCopyLabel.textContent = 'Copiar Texto';
           btnCopyResult.classList.remove('copied');
           copyIconSvg.innerHTML = '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>';
         }, 2000);
@@ -1789,7 +1802,8 @@
     btnDownloadResult.addEventListener('click', () => {
       const text = transcriptionText.textContent;
       if (!text) return;
-      const filename = (currentAudioFile ? currentAudioFile.name.replace(/\.[^/.]+$/, '') : 'transcricao') + '_transcricao.txt';
+      const name = stageFileTitle.textContent || 'transcricao';
+      const filename = name.replace(/\.[^/.]+$/, '') + '_transcricao.txt';
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
@@ -1801,7 +1815,7 @@
       showToast('Arquivo baixado.');
     });
 
-    // Local History System
+    // History System
     const STORAGE_KEY = 'transcrevezap_user_history';
     const historyList = document.getElementById('history-list');
     const historyEmpty = document.getElementById('history-empty');
@@ -1824,6 +1838,9 @@
     function loadHistory() {
       historyEntries = getLocalHistory();
       renderHistory(historyEntries);
+      if (historyEntries.length > 0) {
+        displayTranscriptionInStage(historyEntries[0]);
+      }
     }
 
     function addHistoryEntry(entry) {
@@ -1838,82 +1855,45 @@
 
       if (!entries || entries.length === 0) {
         historyEmpty.style.display = 'block';
+        historyList.appendChild(historyEmpty);
         btnClearHistory.style.display = 'none';
         historySearchContainer.style.display = 'none';
         return;
       }
 
       historyEmpty.style.display = 'none';
-      btnClearHistory.style.display = 'inline-flex';
+      btnClearHistory.style.display = 'inline-block';
       historySearchContainer.style.display = 'block';
 
       entries.forEach(entry => {
-        const row = document.createElement('article');
-        row.className = 'history-item-row';
+        const row = document.createElement('div');
+        row.className = `history-row ${entry.id === activeTranscriptionId ? 'active' : ''}`;
+        row.setAttribute('data-id', entry.id);
 
-        const rowHeader = document.createElement('div');
-        rowHeader.className = 'history-row-header';
+        const top = document.createElement('div');
+        top.className = 'history-row-top';
 
         const name = document.createElement('div');
-        name.className = 'history-row-filename';
+        name.className = 'history-row-name';
         name.textContent = entry.filename;
 
         const date = document.createElement('div');
         date.className = 'history-row-date tabular-num';
         date.textContent = new Date(entry.created_at).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
 
-        rowHeader.append(name, date);
+        top.append(name, date);
 
         const snippet = document.createElement('div');
         snippet.className = 'history-row-snippet';
         snippet.textContent = entry.text;
 
-        const actions = document.createElement('div');
-        actions.className = 'history-row-actions';
+        row.append(top, snippet);
 
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'btn-action';
-        copyBtn.style.padding = '4px 8px';
-        copyBtn.style.fontSize = '11px';
-        copyBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copiar';
-        copyBtn.addEventListener('click', async () => {
-          await navigator.clipboard.writeText(entry.text);
-          showToast('Copiado!');
+        // Clicking a row loads it immediately into the large reading stage on the right!
+        row.addEventListener('click', () => {
+          displayTranscriptionInStage(entry);
         });
 
-        const dlBtn = document.createElement('button');
-        dlBtn.className = 'btn-action';
-        dlBtn.style.padding = '4px 8px';
-        dlBtn.style.fontSize = '11px';
-        dlBtn.title = 'Baixar TXT';
-        dlBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>';
-        dlBtn.addEventListener('click', () => {
-          const blob = new Blob([entry.text], { type: 'text/plain;charset=utf-8' });
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = `${entry.filename}_transcricao.txt`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(a.href);
-        });
-
-        const delBtn = document.createElement('button');
-        delBtn.className = 'btn-action';
-        delBtn.style.padding = '4px 8px';
-        delBtn.style.fontSize = '11px';
-        delBtn.style.color = 'var(--danger-primary)';
-        delBtn.title = 'Excluir';
-        delBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
-        delBtn.addEventListener('click', () => {
-          if (!confirm(`Remover "${entry.filename}"?`)) return;
-          historyEntries = historyEntries.filter(i => i.id !== entry.id);
-          saveLocalHistory(historyEntries);
-          renderHistory(historyEntries);
-        });
-
-        actions.append(copyBtn, dlBtn, delBtn);
-        row.append(rowHeader, snippet, actions);
         historyList.appendChild(row);
       });
     }
@@ -1932,6 +1912,10 @@
       historyEntries = [];
       saveLocalHistory(historyEntries);
       renderHistory(historyEntries);
+      stageEmptyState.style.display = 'flex';
+      stageContentArea.style.display = 'none';
+      stageFileTitle.textContent = 'Transcrição do Áudio';
+      stageStats.textContent = 'Aguardando áudio...';
       showToast('Histórico limpo.');
     });
 
